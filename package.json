@@ -14,7 +14,7 @@
     "npm": ">=6.0.0"
   },
   "dependencies": {
-    "minimatch": "^3.0.4"
+    "glob": "^7.1.6"
   },
   "devDependencies": {
     "eslint": "^6.3.0",
