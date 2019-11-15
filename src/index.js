@@ -20,16 +20,14 @@ const linePushPull = (line, pushRe, pullRe) => {
   return result
 }
 
-const strip = input => input.replace(/^\s*(.*?)\s*$/, "$1")
-
 const escapeRegExp = input => input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 
 const pushRe = push => {
-  const pushStrippedEscaped = escapeRegExp(strip(push))
+  const pushStrippedEscaped = escapeRegExp(push.trim())
   return pushStrippedEscaped.length > 0 ? RegExp(`^(\\s*)(${pushStrippedEscaped})(\\s*)(.*?)(\\s*)$`, "g") : null
 }
 const pullRe = pull => {
-  const pullStrippedEscaped = escapeRegExp(strip(pull))
+  const pullStrippedEscaped = escapeRegExp(pull.trim())
   return pullStrippedEscaped.length > 0 ? RegExp(`^(\\s*)(.*?)(\\s*)(${pullStrippedEscaped})(\\s*)$`, "g") : null
 }
 
