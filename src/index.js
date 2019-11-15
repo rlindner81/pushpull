@@ -45,15 +45,17 @@ const testIt = () => {
   console.log(`${line}\n${linePushPull(line, pushRe(push), pullRe(pull))}`)
 }
 
-const _processFilterDirectory = (filterRe, dir, filepaths = []) => {
-  for (const fileEntry of readdirSync(dir, { withFileTypes: true })) {
-    const filepath = join(dir, fileEntry.name)
-    if (filterRe.exec(filepath) === null) {
+const _processFilterDirectory = (filterRe, root, sub = "", filepaths = []) => {
+  const current = sub === null ? root : join(root, sub)
+  for (const fileEntry of readdirSync(current, { withFileTypes: true })) {
+    const relativeFilepath = join(sub, fileEntry.name)
+    if (filterRe.exec(relativeFilepath) === null) {
       continue
     }
     if (fileEntry.isDirectory()) {
-      _processFilterDirectory(filterRe, filepath, filepaths)
+      _processFilterDirectory(filterRe, root, relativeFilepath, filepaths)
     } else if (fileEntry.isFile()) {
+      const filepath = join(current, fileEntry.name)
       filepaths.push(filepath)
     }
   }
