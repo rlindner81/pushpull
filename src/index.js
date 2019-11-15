@@ -1,13 +1,18 @@
-const PushPull = (filter, processors) => {
-  if (!Array.isArray(processors) || processors.length === 0) {
-    return null
-  }
-  this.push = pushRe(push)
-  this.pull = pullRe(pull)
-  return this
-}
+const { sep, join } = require("path")
+const { readdirSync } = require("fs")
+const minimatch = require("minimatch")
+const { assert } = require("./helper")
 
-const filePushPull = (filepath, pushRe, pullRe) => {}
+// const PushPull = (filter, processors) => {
+//   if (!Array.isArray(processors) || processors.length === 0) {
+//     return null
+//   }
+//   this.push = pushRe(push)
+//   this.pull = pullRe(pull)
+//   return this
+// }
+
+// const filePushPull = (filepath, pushRe, pullRe) => {}
 
 const linePushPull = (line, pushRe, pullRe) => {
   let result = line
@@ -40,4 +45,34 @@ const testIt = () => {
   console.log(`${line}\n${linePushPull(line, pushRe(push), pullRe(pull))}`)
 }
 
-testIt()
+const _processFilterDirectory = (filterRe, dir, filepaths = []) => {
+  for (const fileEntry of readdirSync(dir, { withFileTypes: true })) {
+    const filepath = join(dir, fileEntry.name)
+    if (filterRe.exec(filepath) === null) {
+      continue
+    }
+    if (fileEntry.isDirectory()) {
+      _processFilterDirectory(filterRe, filepath, filepaths)
+    } else if (fileEntry.isFile()) {
+      filepaths.push(filepath)
+    }
+  }
+  return filepaths
+}
+
+const processFilter = filter => {
+  const filterRe = minimatch.makeRe(filter)
+  const root = process.cwd()
+  const filepaths = _processFilterDirectory(filterRe, root)
+  assert(filepaths.length !== 0, `found no filepaths matching ${filter} in ${root}`)
+  return filepaths
+}
+
+const processDirectives = directives => {
+  return directives
+}
+
+module.exports = {
+  processFilter,
+  processDirectives
+}
