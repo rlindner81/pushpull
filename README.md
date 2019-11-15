@@ -4,7 +4,7 @@ Convenience tool to make your files content flexible
 # Example
 Let's say we don't want the users of some repostiory to update `package-lock.json` with every `npm install`, but we _do_ want to give an easy option `npm run update-package-lock` for consciously updating it.
 
-With PushPull this is easy -- just add appropriate comments to make your [.npmrc](./.npmrc) flexible.
+With PushPull this is easy --- just add appropriate comments to make your [.npmrc](./.npmrc) flexible.
 ```
 .npmrc
 package-lock=false # UPDATE_OFF
