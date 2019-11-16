@@ -11,8 +11,11 @@ const ordinal = a =>
 
 const escapeRegExp = input => input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 
+const noop = () => {}
+
 module.exports = {
   assert,
   ordinal,
-  escapeRegExp
+  escapeRegExp,
+  noop
 }

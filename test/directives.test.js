@@ -2,8 +2,6 @@ jest.mock("fs")
 const fs = require("fs")
 const processDirectives = require("../src/directives")
 
-const log = () => {}
-
 const mockDirectives = (input, directives) => {
   let result = null
   fs.readFile.mockImplementationOnce((_, cb) => {
@@ -13,7 +11,7 @@ const mockDirectives = (input, directives) => {
     result = data
     cb(null)
   })
-  return processDirectives(["_"], directives, log).then(() => result)
+  return processDirectives(["_"], directives).then(() => result)
 }
 
 test("process push directive", () => {

@@ -3,7 +3,7 @@ const { join, parse, format, normalize, isAbsolute } = require("path")
 const { promisify } = require("util")
 const readdirAsync = promisify(fs.readdir)
 const minimatch = require("minimatch")
-const { assert, escapeRegExp } = require("./helper")
+const { escapeRegExp, noop } = require("./helper")
 
 const _processFilterDirectory = (filterRe, root, sub = "", filepaths = []) => {
   const current = sub === null ? root : join(root, sub)
@@ -37,7 +37,7 @@ const _matchesFile = parts => {
   return RegExp(escapeRegExp(filter).replace("\\*\\*", ""), "g")
 }
 
-const processFilter = (input, log = console.log) => {
+const processFilter = (input, log = noop) => {
   const inputNormalized = normalize(input)
   const inputAbsolute = isAbsolute(inputNormalized) ? inputNormalized : join(process.cwd(), inputNormalized)
   const inputParts = parse(inputAbsolute)

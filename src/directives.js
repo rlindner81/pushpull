@@ -2,7 +2,7 @@ const fs = require("fs")
 const { promisify } = require("util")
 const readFileAsync = promisify(fs.readFile)
 const writeFileAsync = promisify(fs.writeFile)
-const { assert, escapeRegExp } = require("./helper")
+const { assert, escapeRegExp, noop } = require("./helper")
 
 const _pushRe = string => {
   const stringEscaped = escapeRegExp(string)
@@ -23,7 +23,7 @@ const _pushPullReplacer = (_, a, b, c, d, e) => a + d + c + b + e
 
 const _switchReplacer = (_, a, b, c, d, e, f, g, h) => (b !== undefined ? a + d + c + b + h : a + g + f + e + h)
 
-const processDirectives = (filepaths, directives, log = console.log) => {
+const processDirectives = (filepaths, directives, log = noop) => {
   const directivesRe = directives.map(([type, string]) => {
     switch (type) {
       case "push":

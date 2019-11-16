@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-const { assert, ordinal } = require("./helper")
 const processDirectives = require("./directives")
 const processFilter = require("./filters")
+const { assert, ordinal, noop } = require("./helper")
 
 const args = process.argv.slice(2)
 
@@ -35,7 +35,7 @@ const parseArgs = args => {
         silent = true
         return ""
       }
-      assert(arg.length !== 0, `${ordinal(parsedOptions)} option --${option} has no associated string`)
+      assert(arg.length !== 0, `${ordinal(parsedOptions)} option --${option} has no associated argument`)
 
       directives.push([option, arg])
       return ""
@@ -52,7 +52,7 @@ const main = () => {
     process.exit(-1)
   }
   const { filter, directives, silent } = parseArgs(args)
-  const log = silent ? () => {} : console.log
+  const log = silent ? noop : console.log
 
   log("filter", filter)
   log("directives", JSON.stringify(directives))
