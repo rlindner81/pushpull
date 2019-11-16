@@ -11,9 +11,7 @@ const mockDirectives = (input, directives) => {
     result = data
     cb(null)
   })
-  return processDirectives(["_"], directives).then(() => {
-    return result
-  })
+  return processDirectives(["_"], directives).then(() => result)
 }
 
 test("process push directive", () => {
@@ -38,5 +36,23 @@ test("process switch directive", () => {
       `   # 123 alalalasdas   
    alalalasdas # 123   `
     )
+  })
+})
+
+test("allow string with slashes", () => {
+  return mockDirectives("   alalalasdas // lalala // 123   ", [["switch", "// 123"]]).then(result => {
+    expect(result).toEqual("   // 123 alalalasdas // lalala   ")
+  })
+})
+
+test("don't change partial matches with prefixes", () => {
+  return mockDirectives("   alalalasdas // lalala // A_LALA   ", [["switch", "// LALA"]]).then(result => {
+    expect(result).toEqual(null)
+  })
+})
+
+test("don't change partial matches with suffixes", () => {
+  return mockDirectives("   alalalasdas // lalala // LALA_A   ", [["switch", "// LALA"]]).then(result => {
+    expect(result).toEqual(null)
   })
 })
