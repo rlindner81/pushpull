@@ -33,10 +33,6 @@ package.json/scripts
 }
 ```
 
-<!--
-pushpull *.js --pull // _OFF --push // HANA_ON
--->
-
 # Syntax
 ```
 pushpull <filter> [--push '<string>'] [--pull '<string>'] [--switch '<string>'] ...
@@ -54,5 +50,7 @@ All further arguments have to be directives `--push`, `--pull`, or `--switch` an
   * `*.*` all files,
   * `*.` all files with the same extension, 
   * `.*` all files with the same basename, and
-  * `**` all subdirectories
-* The quotes are not needed by pushpull, but depending on the shell you use, parts of the string may be interpreted before they are passed as arguments. So quoting helps to avoid confusion.
+  * `**/` all subdirectories
+* `<filter>` works with both absolute and relative paths
+* `<filter>` will never expand into directories named `node_modules`
+* the quotes are not needed by pushpull, but depending on the shell you use, parts of the string may be interpreted before they are passed to pushpull as arguments. So quoting helps to avoid confusion.
