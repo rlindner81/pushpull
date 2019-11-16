@@ -26,7 +26,12 @@
     "jest": "^24.9.0",
     "prettier": "^1.18.2"
   },
-  "keywords": ["cli", "tool", "flexible", "config"],
+  "keywords": [
+    "cli",
+    "tool",
+    "flexible",
+    "config"
+  ],
   "author": "Richard Lindner <rlindner81@gmail.com>",
   "license": "MIT",
   "repository": {
