@@ -61,25 +61,38 @@ const linePushPull = (line, pushRe, pullRe) => {
 
 const escapeRegExp = input => input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 
-const pushRe = push => {
-  const pushStrippedEscaped = escapeRegExp(push.trim())
-  return pushStrippedEscaped.length > 0 ? RegExp(`^(\\s*)(${pushStrippedEscaped})(\\s*)(.*?)(\\s*)$`, "gm") : null
+const pushRe = string => {
+  const stringEscaped = escapeRegExp(string)
+  return stringEscaped.length > 0 ? RegExp(`^(\\s*)(${stringEscaped})(\\s*)(.*?)(\\s*)$`, "gm") : null
 }
-const pullRe = pull => {
-  const pullStrippedEscaped = escapeRegExp(pull.trim())
-  return pullStrippedEscaped.length > 0 ? RegExp(`^(\\s*)(.*?)(\\s*)(${pullStrippedEscaped})(\\s*)$`, "gm") : null
+
+const pullRe = string => {
+  const stringEscaped = escapeRegExp(string)
+  return stringEscaped.length > 0 ? RegExp(`^(\\s*)(.*?)(\\s*)(${stringEscaped})(\\s*)$`, "gm") : null
+}
+
+const switchRe = string => {
+  const stringEscaped = escapeRegExp(string)
+  return stringEscaped.length > 0
+    ? RegExp(`^(\\s*)(?:(${stringEscaped})(\\s*)(.*?)|(.*?)(\\s*)(${stringEscaped}))(\\s*)$`, "gm")
+    : null
+}
+
+const pushPullReplacer = (_, a, b, c, d, e) => a + d + c + b + e
+
+const switchReplacer = (_, a, b, c, d, e, f, g, h) => {
+  return b !== undefined ? a + d + c + b + h : a + g + f + e + h
 }
 
 const processDirectives = (filepaths, directives) => {
   const directivesRe = directives.map(([type, string]) => {
     switch (type) {
       case "push":
-        return pushRe(string)
+        return [pushRe(string), pushPullReplacer]
       case "pull":
-        return pullRe(string)
+        return [pullRe(string), pushPullReplacer]
       case "switch":
-        assert(false, "not implemented yet")
-        break
+        return [switchRe(string), switchReplacer]
       default:
         assert(false, `encountered unknown directive ${type}`)
         break
@@ -88,10 +101,10 @@ const processDirectives = (filepaths, directives) => {
   for (const filepath of filepaths) {
     let processed = false
     let data = readFileSync(filepath).toString()
-    for (const directiveRe of directivesRe) {
-      data = data.replace(directiveRe, (_, a, b, c, d, e) => {
+    for (const [directiveRe, replacer] of directivesRe) {
+      data = data.replace(directiveRe, () => {
         processed = true
-        return a + d + c + b + e
+        return replacer.apply(null, arguments)
       })
     }
     if (processed) {
