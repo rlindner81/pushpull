@@ -1,27 +1,7 @@
-const { sep, join } = require("path")
+const { join } = require("path")
 const { readFileSync, writeFileSync, readdirSync } = require("fs")
 const minimatch = require("minimatch")
 const { assert } = require("./helper")
-
-// const PushPull = (filter, processors) => {
-//   if (!Array.isArray(processors) || processors.length === 0) {
-//     return null
-//   }
-//   this.push = pushRe(push)
-//   this.pull = pullRe(pull)
-//   return this
-// }
-
-// const filePushPull = (filepath, pushRe, pullRe) => {}
-
-const testIt = () => {
-  // const line = "   // \HANA_IN       a, bbb"
-  const line = "   a, bbb  // \\HANA_OUT_D"
-  const push = "// HANA_IN"
-  const pull = "// \\HANA_OUT"
-
-  console.log(`${line}\n${linePushPull(line, pushRe(push), pullRe(pull))}`)
-}
 
 const _processFilterDirectory = (filterRe, root, sub = "", filepaths = []) => {
   const current = sub === null ? root : join(root, sub)
@@ -48,34 +28,21 @@ const processFilter = filter => {
   return filepaths
 }
 
-const linePushPull = (line, pushRe, pullRe) => {
-  let result = line
-  if (pushRe !== null) {
-    result = result.replace(pushRe, "$1$4$3$2$5")
-  }
-  if (pullRe !== null) {
-    result = result.replace(pullRe, "$1$4$3$2$5")
-  }
-  return result
-}
-
 const escapeRegExp = input => input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 
 const pushRe = string => {
   const stringEscaped = escapeRegExp(string)
-  return stringEscaped.length > 0 ? RegExp(`^(\\s*)(${stringEscaped})(\\s*)(.*?)(\\s*)$`, "gm") : null
+  return RegExp(`^(\\s*)(${stringEscaped})(\\s*)(.*?)(\\s*)$`, "gm")
 }
 
 const pullRe = string => {
   const stringEscaped = escapeRegExp(string)
-  return stringEscaped.length > 0 ? RegExp(`^(\\s*)(.*?)(\\s*)(${stringEscaped})(\\s*)$`, "gm") : null
+  return RegExp(`^(\\s*)(.*?)(\\s*)(${stringEscaped})(\\s*)$`, "gm")
 }
 
 const switchRe = string => {
   const stringEscaped = escapeRegExp(string)
-  return stringEscaped.length > 0
-    ? RegExp(`^(\\s*)(?:(${stringEscaped})(\\s*)(.*?)|(.*?)(\\s*)(${stringEscaped}))(\\s*)$`, "gm")
-    : null
+  return RegExp(`^(\\s*)(?:(${stringEscaped})(\\s*)(.*?)|(.*?)(\\s*)(${stringEscaped}))(\\s*)$`, "gm")
 }
 
 const pushPullReplacer = (_, a, b, c, d, e) => a + d + c + b + e
