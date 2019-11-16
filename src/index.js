@@ -80,9 +80,7 @@ const switchRe = string => {
 
 const pushPullReplacer = (_, a, b, c, d, e) => a + d + c + b + e
 
-const switchReplacer = (_, a, b, c, d, e, f, g, h) => {
-  return b !== undefined ? a + d + c + b + h : a + g + f + e + h
-}
+const switchReplacer = (_, a, b, c, d, e, f, g, h) => (b !== undefined ? a + d + c + b + h : a + g + f + e + h)
 
 const processDirectives = (filepaths, directives) => {
   const directivesRe = directives.map(([type, string]) => {
@@ -102,9 +100,9 @@ const processDirectives = (filepaths, directives) => {
     let processed = false
     let data = readFileSync(filepath).toString()
     for (const [directiveRe, replacer] of directivesRe) {
-      data = data.replace(directiveRe, () => {
+      data = data.replace(directiveRe, (...args) => {
         processed = true
-        return replacer.apply(null, arguments)
+        return replacer.apply(null, args)
       })
     }
     if (processed) {
