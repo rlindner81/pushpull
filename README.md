@@ -52,5 +52,5 @@ The argument `--silent` disables all logging. Further arguments have to be direc
   * `.*` all files with the same basename, and
   * `**/` all subdirectories
 * `<filter>` works with both absolute and relative paths
-* `<filter>` will never expand into directories named `node_modules`
+* `<filter>` will never expand into directories named `node_modules` or `.git`
 * the quotes are not needed by pushpull, but depending on the shell you use, parts of the string may be interpreted before they are passed to pushpull as arguments. So quoting helps to avoid confusion.

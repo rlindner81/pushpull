@@ -54,10 +54,8 @@ const main = () => {
   const { filter, directives, silent } = parseArgs(args)
   const log = silent ? noop : console.log
 
-  log("filter", filter)
-  log("directives", JSON.stringify(directives))
   return processFilter(filter, log).then(filepaths => {
-    log("filepaths", filepaths)
+    log(`filter ${filter} matches ${filepaths.length} file(s)`)
     return processDirectives(filepaths, directives, log)
   })
 }
