@@ -6,7 +6,7 @@ const { assert, escapeRegExp, noop } = require("./helper")
 
 const IGNORE_DIRECTORIES = [".git", "node_modules"]
 
-const _processFilterDirectory = (dir, shouldDescendDirectory, matchesFile, result = []) => {
+const _processFilterDirectory = (dir, shouldDescendDirectory, matchesFilepath, result = []) => {
   return readdirAsync(dir, { withFileTypes: true })
     .then(fileEntries => {
       return Promise.all(
@@ -17,11 +17,11 @@ const _processFilterDirectory = (dir, shouldDescendDirectory, matchesFile, resul
             IGNORE_DIRECTORIES.indexOf(fileEntry.name) === -1 &&
             shouldDescendDirectory(filepath)
           ) {
-            return _processFilterDirectory(filepath, shouldDescendDirectory, matchesFile, result)
+            return _processFilterDirectory(filepath, shouldDescendDirectory, matchesFilepath, result)
             // .then(subResult => {
             //   result = result.concat(subResult)
             // })
-          } else if (fileEntry.isFile() && matchesFile(filepath)) {
+          } else if (fileEntry.isFile() && matchesFilepath(filepath)) {
             result.push(filepath)
           }
         })
@@ -36,20 +36,21 @@ const _processFilterDirectory = (dir, shouldDescendDirectory, matchesFile, resul
     })
 }
 
-// eslint-disable-next-line no-unused-vars
 const _shouldDescendDirectory = parts => {
-  // eslint-disable-next-line no-unused-vars
+  const dirRe = RegExp(`^${escapeRegExp(parts.dir).replace(/\\\*\\\*/g, ".*?")}$`)
   return filepath => {
-    return false
+    const { dir } = parse(filepath)
+    return dirRe.test(dir)
   }
 }
 
-const _matchesFile = parts => {
+const _matchesFilepath = parts => {
+  const dirRe = RegExp(`^${escapeRegExp(parts.dir).replace(/\\\*\\\*/g, ".*?")}$`)
   const nameRe = RegExp(`^${escapeRegExp(parts.name).replace(/\\\*/g, ".*?")}$`)
   const extRe = RegExp(`^${escapeRegExp(parts.ext).replace(/\\\*/g, ".*?")}$`)
   return filepath => {
-    const { name, ext } = parse(filepath)
-    return nameRe.test(name) && extRe.test(ext)
+    const { dir, name, ext } = parse(filepath)
+    return dirRe.test(dir) && nameRe.test(name) && extRe.test(ext)
   }
 }
 
@@ -61,7 +62,11 @@ const processFilter = (input, log = noop) => {
   const inputParts = parse(inputAbsolute)
   log("inputFormatted", format(inputParts))
   log("inputParts", JSON.stringify(inputParts))
-  return _processFilterDirectory(_startDir(inputParts), _shouldDescendDirectory(inputParts), _matchesFile(inputParts))
+  return _processFilterDirectory(
+    _startDir(inputParts),
+    _shouldDescendDirectory(inputParts),
+    _matchesFilepath(inputParts)
+  )
 }
 
 module.exports = processFilter

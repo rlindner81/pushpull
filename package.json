@@ -13,9 +13,6 @@
     "node": ">=8.0.0",
     "npm": ">=6.0.0"
   },
-  "dependencies": {
-    "glob": "^7.1.6"
-  },
   "devDependencies": {
     "eslint": "^6.3.0",
     "eslint-config-prettier": "^6.2.0",

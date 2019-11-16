@@ -45,6 +45,14 @@ test("allow string with slashes", () => {
   })
 })
 
+// TODO this test is broken!!!
+// Code is fixed now for this case though...
+test("don't change partial front matches with suffixes", () => {
+  return mockDirectives("// LALA_A alalalasdas // lalala", [["switch", "// LALA"]]).then(result => {
+    expect(result).toEqual(null)
+  })
+})
+
 test("don't change partial back matches with prefixes", () => {
   return mockDirectives("alalalasdas // lalala // A_LALA", [["switch", "// LALA"]]).then(result => {
     expect(result).toEqual(null)
@@ -59,12 +67,6 @@ test("don't change partial back matches with suffixes", () => {
 
 test("don't change partial front matches with prefixes", () => {
   return mockDirectives("// A_LALA alalalasdas // lalala", [["switch", "// LALA"]]).then(result => {
-    expect(result).toEqual(null)
-  })
-})
-
-test("don't change partial front matches with suffixes", () => {
-  return mockDirectives("// LALA_A alalalasdas // lalala", [["switch", "// LALA"]]).then(result => {
     expect(result).toEqual(null)
   })
 })
