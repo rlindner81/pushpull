@@ -35,7 +35,7 @@ package.json/scripts
 
 # Syntax
 ```
-pushpull <filter> [--push '<string>'] [--pull '<string>'] [--switch '<string>'] ...
+pushpull <filter> [--silent] [--push '<string>'] [--pull '<string>'] [--switch '<string>'] ...
 ```
 The first argument `<filter>` is mandatory. It should filter those files you want to change, i.e., 
 * `.eslintrc.yml` only the file `.eslintrc.yml` in the current directory,
@@ -43,7 +43,7 @@ The first argument `<filter>` is mandatory. It should filter those files you wan
 * `**/*.yaml` all files with `.yaml` extension in the current directory and subdirectories,
 * `config/**/*.js` all files with `.js` extension in all subdirectory of the `./config` directory.
 
-All further arguments have to be directives `--push`, `--pull`, or `--switch` and a (quoted) string. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. The directives are executed on all matching files in the order they are given.
+The argument `--silent` disables all logging. Further arguments have to be directives `--push`, `--pull`, or `--switch` and a (quoted) string. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. The directives are executed on all matching files in the order they are given.
 
 ### Notes
 * `<filter>` only expands

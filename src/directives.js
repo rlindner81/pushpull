@@ -23,7 +23,7 @@ const _pushPullReplacer = (_, a, b, c, d, e) => a + d + c + b + e
 
 const _switchReplacer = (_, a, b, c, d, e, f, g, h) => (b !== undefined ? a + d + c + b + h : a + g + f + e + h)
 
-const processDirectives = (filepaths, directives) => {
+const processDirectives = (filepaths, directives, log = console.log) => {
   const directivesRe = directives.map(([type, string]) => {
     switch (type) {
       case "push":
@@ -49,7 +49,7 @@ const processDirectives = (filepaths, directives) => {
           })
         }
         if (changes > 0) {
-          console.log(`${changes} changes in ${filepath}`)
+          log(`${changes} changes in ${filepath}`)
           return writeFileAsync(filepath, data)
         }
       })

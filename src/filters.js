@@ -1,5 +1,5 @@
 const fs = require("fs")
-const { join } = require("path")
+const { join, parse, format, normalize, isAbsolute } = require("path")
 const { promisify } = require("util")
 const readdirAsync = promisify(fs.readdir)
 const minimatch = require("minimatch")
@@ -29,16 +29,23 @@ const _processFilterDirectory = (filterRe, root, sub = "", filepaths = []) => {
     })
 }
 
-const _filterRe = filter => {
+const _matchesDir = parts => {
   return RegExp(escapeRegExp(filter).replace("\\*\\*", ""), "g")
 }
 
-const processFilter = filter => {
-  const filterNormalized = process.platform === "win32" ? filter.replace("\\", "/") : filter
-  const filterRe = minimatch.makeRe(filter) // _filterRe(filterNormalized)
-  const root = process.cwd()
-  return _processFilterDirectory(filterRe, root).then(filepaths => {
-    assert(filepaths.length !== 0, `found no filepaths matching ${filterNormalized} in ${root}`)
+const _matchesFile = parts => {
+  return RegExp(escapeRegExp(filter).replace("\\*\\*", ""), "g")
+}
+
+const processFilter = (input, log = console.log) => {
+  const inputNormalized = normalize(input)
+  const inputAbsolute = isAbsolute(inputNormalized) ? inputNormalized : join(process.cwd(), inputNormalized)
+  const inputParts = parse(inputAbsolute)
+  log("inputFormatted", format(inputParts))
+  log("inputParts", JSON.stringify(inputParts))
+  process.exit(0)
+  // const filterRe = minimatch.makeRe(filter) // _filterRe(filterNormalized)
+  return _processFilterDirectory(inputParts.dir, _matchesDir(inputParts), _matchesFile(inputParts)).then(filepaths => {
     return filepaths
   })
 }
