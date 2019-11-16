@@ -58,7 +58,7 @@ const main = () => {
   log("directives", JSON.stringify(directives))
   return processFilter(filter, log).then(filepaths => {
     log("filepaths", filepaths)
-    processDirectives(filepaths, directives, log)
+    return processDirectives(filepaths, directives, log)
   })
 }
 

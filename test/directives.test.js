@@ -45,14 +45,39 @@ test("allow string with slashes", () => {
   })
 })
 
-test("don't change partial matches with prefixes", () => {
-  return mockDirectives("   alalalasdas // lalala // A_LALA   ", [["switch", "// LALA"]]).then(result => {
+test("don't change partial back matches with prefixes", () => {
+  return mockDirectives("alalalasdas // lalala // A_LALA", [["switch", "// LALA"]]).then(result => {
     expect(result).toEqual(null)
   })
 })
 
-test("don't change partial matches with suffixes", () => {
-  return mockDirectives("   alalalasdas // lalala // LALA_A   ", [["switch", "// LALA"]]).then(result => {
+test("don't change partial back matches with suffixes", () => {
+  return mockDirectives("alalalasdas // lalala // LALA_A", [["switch", "// LALA"]]).then(result => {
+    expect(result).toEqual(null)
+  })
+})
+
+test("don't change partial front matches with prefixes", () => {
+  return mockDirectives("// A_LALA alalalasdas // lalala", [["switch", "// LALA"]]).then(result => {
+    expect(result).toEqual(null)
+  })
+})
+
+test("don't change partial front matches with suffixes", () => {
+  return mockDirectives("// LALA_A alalalasdas // lalala", [["switch", "// LALA"]]).then(result => {
+    expect(result).toEqual(null)
+  })
+})
+
+test("lala", () => {
+  return mockDirectives(
+    `.npmrc
+package-lock=false # UPDATE_OFF
+# UPDATE_ON package-lock=true
+
+`,
+    [["switch", "# UPDATE"]]
+  ).then(result => {
     expect(result).toEqual(null)
   })
 })

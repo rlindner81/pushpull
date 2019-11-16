@@ -2,40 +2,58 @@ const fs = require("fs")
 const { join, parse, format, normalize, isAbsolute } = require("path")
 const { promisify } = require("util")
 const readdirAsync = promisify(fs.readdir)
-const minimatch = require("minimatch")
-const { escapeRegExp, noop } = require("./helper")
+const { assert, escapeRegExp, noop } = require("./helper")
 
-const _processFilterDirectory = (filterRe, root, sub = "", filepaths = []) => {
-  const current = sub === null ? root : join(root, sub)
-  return readdirAsync(current, { withFileTypes: true })
+const IGNORE_DIRECTORIES = [".git", "node_modules"]
+
+const _processFilterDirectory = (dir, shouldDescendDirectory, matchesFile, result = []) => {
+  return readdirAsync(dir, { withFileTypes: true })
     .then(fileEntries => {
       return Promise.all(
         fileEntries.map(fileEntry => {
-          const relativeFilepath = join(sub, fileEntry.name)
-          if (filterRe.exec(relativeFilepath) === null) {
-            return
-          }
-          if (fileEntry.isDirectory()) {
-            return _processFilterDirectory(filterRe, root, relativeFilepath, filepaths)
-          } else if (fileEntry.isFile()) {
-            const filepath = join(current, fileEntry.name)
-            filepaths.push(filepath)
+          const filepath = join(dir, fileEntry.name)
+          if (
+            fileEntry.isDirectory() &&
+            IGNORE_DIRECTORIES.indexOf(fileEntry.name) === -1 &&
+            shouldDescendDirectory(filepath)
+          ) {
+            return _processFilterDirectory(filepath, shouldDescendDirectory, matchesFile, result)
+            // .then(subResult => {
+            //   result = result.concat(subResult)
+            // })
+          } else if (fileEntry.isFile() && matchesFile(filepath)) {
+            result.push(filepath)
           }
         })
       )
     })
+    .catch(err => {
+      assert(err.code !== "ENOENT", `invalid starting directory ${dir}`)
+      throw err
+    })
     .then(() => {
-      return filepaths
+      return result
     })
 }
 
-const _matchesDir = parts => {
-  return RegExp(escapeRegExp(filter).replace("\\*\\*", ""), "g")
+// eslint-disable-next-line no-unused-vars
+const _shouldDescendDirectory = parts => {
+  // eslint-disable-next-line no-unused-vars
+  return filepath => {
+    return false
+  }
 }
 
 const _matchesFile = parts => {
-  return RegExp(escapeRegExp(filter).replace("\\*\\*", ""), "g")
+  const nameRe = RegExp(`^${escapeRegExp(parts.name).replace(/\\\*/g, ".*?")}$`)
+  const extRe = RegExp(`^${escapeRegExp(parts.ext).replace(/\\\*/g, ".*?")}$`)
+  return filepath => {
+    const { name, ext } = parse(filepath)
+    return nameRe.test(name) && extRe.test(ext)
+  }
 }
+
+const _startDir = parts => parts.dir.replace(/^(.*?)\*\*.*$/, "$1")
 
 const processFilter = (input, log = noop) => {
   const inputNormalized = normalize(input)
@@ -43,11 +61,7 @@ const processFilter = (input, log = noop) => {
   const inputParts = parse(inputAbsolute)
   log("inputFormatted", format(inputParts))
   log("inputParts", JSON.stringify(inputParts))
-  process.exit(0)
-  // const filterRe = minimatch.makeRe(filter) // _filterRe(filterNormalized)
-  return _processFilterDirectory(inputParts.dir, _matchesDir(inputParts), _matchesFile(inputParts)).then(filepaths => {
-    return filepaths
-  })
+  return _processFilterDirectory(_startDir(inputParts), _shouldDescendDirectory(inputParts), _matchesFile(inputParts))
 }
 
 module.exports = processFilter
