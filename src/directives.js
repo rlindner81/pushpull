@@ -6,17 +6,17 @@ const { assert, escapeRegExp, noop } = require("./helper")
 
 const _pushRe = string => {
   const stringEscaped = escapeRegExp(string)
-  return RegExp(`^(\\s*)(${stringEscaped})(\\s*)(.*?)(\\s*)$`, "gm")
+  return RegExp(`^(\\s*)(${stringEscaped})(\\s+)(.*?)(\\s*)$`, "gm")
 }
 
 const _pullRe = string => {
   const stringEscaped = escapeRegExp(string)
-  return RegExp(`^(\\s*)(.*?)(\\s*)(${stringEscaped})(\\s*)$`, "gm")
+  return RegExp(`^(\\s*)(.*?)(\\s+)(${stringEscaped})(\\s*)$`, "gm")
 }
 
 const _switchRe = string => {
   const stringEscaped = escapeRegExp(string)
-  return RegExp(`^(\\s*)(?:(${stringEscaped})(\\s*)(.*?)|(.*?)(\\s*)(${stringEscaped}))(\\s*)$`, "gm")
+  return RegExp(`^(\\s*)(?:(${stringEscaped})(\\s+)(.*?)|(.*?)(\\s+)(${stringEscaped}))(\\s*)$`, "gm")
 }
 
 const _pushPullReplacer = (_, a, b, c, d, e) => a + d + c + b + e

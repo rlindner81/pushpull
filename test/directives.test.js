@@ -68,16 +68,3 @@ test("don't change partial front matches with suffixes", () => {
     expect(result).toEqual(null)
   })
 })
-
-test("lala", () => {
-  return mockDirectives(
-    `.npmrc
-package-lock=false # UPDATE_OFF
-# UPDATE_ON package-lock=true
-
-`,
-    [["switch", "# UPDATE"]]
-  ).then(result => {
-    expect(result).toEqual(null)
-  })
-})
