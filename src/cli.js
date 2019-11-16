@@ -46,10 +46,11 @@ const main = () => {
   }
   const { filter, directives } = parseArgs(args)
   console.log("filter", filter)
-  const filepaths = processFilter(filter)
-  console.log("filepaths", filepaths)
-  console.log("directives", JSON.stringify(directives))
-  processDirectives(filepaths, directives)
+  return processFilter(filter).then(filepaths => {
+    console.log("filepaths", filepaths)
+    console.log("directives", JSON.stringify(directives))
+    processDirectives(filepaths, directives)
+  })
 }
 
 main()

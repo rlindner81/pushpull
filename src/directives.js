@@ -1,4 +1,7 @@
-const { readFileSync, writeFileSync } = require("fs")
+const fs = require("fs")
+const { promisify } = require("util")
+const readFileAsync = promisify(fs.readFile)
+const writeFileAsync = promisify(fs.writeFile)
 const { assert, escapeRegExp } = require("./helper")
 
 const _pushRe = string => {
@@ -34,20 +37,24 @@ const processDirectives = (filepaths, directives) => {
         break
     }
   })
-  for (const filepath of filepaths) {
-    let processed = false
-    let data = readFileSync(filepath).toString()
-    for (const [directiveRe, replacer] of directivesRe) {
-      data = data.replace(directiveRe, (...args) => {
-        processed = true
-        return replacer.apply(null, args)
+  return Promise.all(
+    filepaths.map(filepath => {
+      let processed = false
+      return readFileAsync(filepath).then(bytes => {
+        let data = bytes.toString()
+        for (const [directiveRe, replacer] of directivesRe) {
+          data = data.replace(directiveRe, (...args) => {
+            processed = true
+            return replacer.apply(null, args)
+          })
+        }
+        if (processed) {
+          console.log(`changed ${filepath}`)
+          return writeFileAsync(filepath, data)
+        }
       })
-    }
-    if (processed) {
-      console.log(`changed ${filepath}`)
-      writeFileSync(filepath, data)
-    }
-  }
+    })
+  )
 }
 
 module.exports = processDirectives
