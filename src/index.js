@@ -1,5 +1,5 @@
 const { sep, join } = require("path")
-const { readdirSync } = require("fs")
+const { readFileSync, writeFileSync, readdirSync } = require("fs")
 const minimatch = require("minimatch")
 const { assert } = require("./helper")
 
@@ -13,28 +13,6 @@ const { assert } = require("./helper")
 // }
 
 // const filePushPull = (filepath, pushRe, pullRe) => {}
-
-const linePushPull = (line, pushRe, pullRe) => {
-  let result = line
-  if (pushRe !== null) {
-    result = result.replace(pushRe, "$1$4$3$2$5")
-  }
-  if (pullRe !== null) {
-    result = result.replace(pullRe, "$1$4$3$2$5")
-  }
-  return result
-}
-
-const escapeRegExp = input => input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-
-const pushRe = push => {
-  const pushStrippedEscaped = escapeRegExp(push.trim())
-  return pushStrippedEscaped.length > 0 ? RegExp(`^(\\s*)(${pushStrippedEscaped})(\\s*)(.*?)(\\s*)$`, "g") : null
-}
-const pullRe = pull => {
-  const pullStrippedEscaped = escapeRegExp(pull.trim())
-  return pullStrippedEscaped.length > 0 ? RegExp(`^(\\s*)(.*?)(\\s*)(${pullStrippedEscaped})(\\s*)$`, "g") : null
-}
 
 const testIt = () => {
   // const line = "   // \HANA_IN       a, bbb"
@@ -70,8 +48,57 @@ const processFilter = filter => {
   return filepaths
 }
 
-const processDirectives = directives => {
-  return directives
+const linePushPull = (line, pushRe, pullRe) => {
+  let result = line
+  if (pushRe !== null) {
+    result = result.replace(pushRe, "$1$4$3$2$5")
+  }
+  if (pullRe !== null) {
+    result = result.replace(pullRe, "$1$4$3$2$5")
+  }
+  return result
+}
+
+const escapeRegExp = input => input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+
+const pushRe = push => {
+  const pushStrippedEscaped = escapeRegExp(push.trim())
+  return pushStrippedEscaped.length > 0 ? RegExp(`^(\\s*)(${pushStrippedEscaped})(\\s*)(.*?)(\\s*)$`, "gm") : null
+}
+const pullRe = pull => {
+  const pullStrippedEscaped = escapeRegExp(pull.trim())
+  return pullStrippedEscaped.length > 0 ? RegExp(`^(\\s*)(.*?)(\\s*)(${pullStrippedEscaped})(\\s*)$`, "gm") : null
+}
+
+const processDirectives = (filepaths, directives) => {
+  const directivesRe = directives.map(([type, string]) => {
+    switch (type) {
+      case "push":
+        return pushRe(string)
+      case "pull":
+        return pullRe(string)
+      case "switch":
+        assert(false, "not implemented yet")
+        break
+      default:
+        assert(false, `encountered unknown directive ${type}`)
+        break
+    }
+  })
+  for (const filepath of filepaths) {
+    let processed = false
+    let data = readFileSync(filepath).toString()
+    for (const directiveRe of directivesRe) {
+      data = data.replace(directiveRe, (_, a, b, c, d, e) => {
+        processed = true
+        return a + d + c + b + e
+      })
+    }
+    if (processed) {
+      console.log(`changed ${filepath}`)
+      writeFileSync(filepath, data)
+    }
+  }
 }
 
 module.exports = {
