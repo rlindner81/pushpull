@@ -1,17 +1,21 @@
 jest.mock("fs")
-const fs = require("fs")
+const { readFile, writeFile } = require("fs")
 const processDirectives = require("../src/directives")
 
 const mockDirectives = (input, directives) => {
   let result = null
-  fs.readFile.mockImplementationOnce((_, cb) => {
+  readFile.mockImplementation((_, cb) => {
     cb(null, input)
   })
-  fs.writeFile.mockImplementationOnce((_, data, cb) => {
+  writeFile.mockImplementation((_, data, cb) => {
     result = data
     cb(null)
   })
-  return processDirectives(["_"], directives).then(() => result)
+  return processDirectives(["_"], directives).then(() => {
+    readFile.mockReset()
+    writeFile.mockReset()
+    return result
+  })
 }
 
 test("process push directive", () => {
@@ -45,28 +49,38 @@ test("allow string with slashes", () => {
   })
 })
 
-// TODO this test is broken!!!
-// Code is fixed now for this case though...
-test("don't change partial front matches with suffixes", () => {
-  return mockDirectives("// LALA_A alalalasdas // lalala", [["switch", "// LALA"]]).then(result => {
+test("don't push/switch partial front matches with prefixes", () => {
+  return mockDirectives("A_// LALA alalalasdas // lalala", [
+    ["push", "// LALA"],
+    ["switch", "// LALA"]
+  ]).then(result => {
     expect(result).toEqual(null)
   })
 })
 
-test("don't change partial back matches with prefixes", () => {
-  return mockDirectives("alalalasdas // lalala // A_LALA", [["switch", "// LALA"]]).then(result => {
+test("don't push/switch partial front matches with suffixes", () => {
+  return mockDirectives("// LALA_A alalalasdas // lalala", [
+    ["push", "// LALA"],
+    ["switch", "// LALA"]
+  ]).then(result => {
     expect(result).toEqual(null)
   })
 })
 
-test("don't change partial back matches with suffixes", () => {
-  return mockDirectives("alalalasdas // lalala // LALA_A", [["switch", "// LALA"]]).then(result => {
+test("don't pull/switch partial back matches with prefixes", () => {
+  return mockDirectives("alalalasdas // lalala A_// LALA", [
+    ["pull", "// LALA"],
+    ["switch", "// LALA"]
+  ]).then(result => {
     expect(result).toEqual(null)
   })
 })
 
-test("don't change partial front matches with prefixes", () => {
-  return mockDirectives("// A_LALA alalalasdas // lalala", [["switch", "// LALA"]]).then(result => {
+test("don't pull/switch partial back matches with suffixes", () => {
+  return mockDirectives("alalalasdas // lalala // LALA_A", [
+    ["pull", "// LALA"],
+    ["switch", "// LALA"]
+  ]).then(result => {
     expect(result).toEqual(null)
   })
 })
