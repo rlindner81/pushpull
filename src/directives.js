@@ -39,17 +39,17 @@ const processDirectives = (filepaths, directives) => {
   })
   return Promise.all(
     filepaths.map(filepath => {
-      let processed = false
+      let changes = 0
       return readFileAsync(filepath).then(bytes => {
         let data = bytes.toString()
         for (const [directiveRe, replacer] of directivesRe) {
           data = data.replace(directiveRe, (...args) => {
-            processed = true
+            changes++
             return replacer.apply(null, args)
           })
         }
-        if (processed) {
-          console.log(`changed ${filepath}`)
+        if (changes > 0) {
+          console.log(`${changes} changes in ${filepath}`)
           return writeFileAsync(filepath, data)
         }
       })

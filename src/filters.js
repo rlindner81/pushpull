@@ -3,7 +3,7 @@ const { join } = require("path")
 const { promisify } = require("util")
 const readdirAsync = promisify(fs.readdir)
 const minimatch = require("minimatch")
-const { assert } = require("./helper")
+const { assert, escapeRegExp } = require("./helper")
 
 const _processFilterDirectory = (filterRe, root, sub = "", filepaths = []) => {
   const current = sub === null ? root : join(root, sub)
@@ -29,11 +29,16 @@ const _processFilterDirectory = (filterRe, root, sub = "", filepaths = []) => {
     })
 }
 
+const _filterRe = filter => {
+  return RegExp(escapeRegExp(filter).replace("\\*\\*", ""), "g")
+}
+
 const processFilter = filter => {
-  const filterRe = minimatch.makeRe(filter)
+  const filterNormalized = process.platform === "win32" ? filter.replace("\\", "/") : filter
+  const filterRe = minimatch.makeRe(filter) // _filterRe(filterNormalized)
   const root = process.cwd()
   return _processFilterDirectory(filterRe, root).then(filepaths => {
-    assert(filepaths.length !== 0, `found no filepaths matching ${filter} in ${root}`)
+    assert(filepaths.length !== 0, `found no filepaths matching ${filterNormalized} in ${root}`)
     return filepaths
   })
 }
