@@ -54,7 +54,7 @@ const main = () => {
   const { filter, directives, silent } = parseArgs(args)
   const log = silent ? noop : console.log
 
-  return processFilter(filter, log).then(filepaths => {
+  return processFilter(filter).then(filepaths => {
     log(`filter ${filter} matches ${filepaths.length} file(s)`)
     return processDirectives(filepaths, directives, log)
   })

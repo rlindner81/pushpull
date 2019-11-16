@@ -2,7 +2,7 @@ const fs = require("fs")
 const { join, parse, normalize, isAbsolute } = require("path")
 const { promisify } = require("util")
 const readdirAsync = promisify(fs.readdir)
-const { assert, escapeRegExp, noop } = require("./helper")
+const { assert, escapeRegExp } = require("./helper")
 
 const IGNORE_DIRECTORIES = [".git", "node_modules"]
 
@@ -44,7 +44,7 @@ const _matchesFilepath = ({ dir, name, ext }) => {
 
 const _dirFixedPart = parts => parts.dir.replace(/^(.*?)\*\*.*$/, "$1")
 
-const processFilter = (input, log = noop) => {
+const processFilter = input => {
   const inputNormalized = normalize(input)
   const inputAbsolute = isAbsolute(inputNormalized) ? inputNormalized : join(process.cwd(), inputNormalized)
   const inputParts = parse(inputAbsolute)
