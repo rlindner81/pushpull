@@ -23,6 +23,7 @@ package.json/scripts
 
 For this easy case, the `switch` directive would be even more appropriate. It does both `push` and `pull` of the same string in one pass.
 ```
+.npmrc
 package-lock=false # UPDATE
 # UPDATE package-lock=true
 
@@ -46,4 +47,12 @@ The first argument `<filter>` is mandatory. It should filter those files you wan
 * `**/*.yaml` all files with `.yaml` extension in the current directory and subdirectories,
 * `config/**/*.js` all files with `.js` extension in all subdirectory of the `./config` directory.
 
-All further arguments have to be directives `--push`, `--pull`, or `--switch` and a (quoted) string. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. The directives are executed in the order they are given.
+All further arguments have to be directives `--push`, `--pull`, or `--switch` and a (quoted) string. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. The directives are executed on all matching files in the order they are given.
+
+### Notes
+* `<filter>` only expands
+  * `*.*` all files,
+  * `*.` all files with the same extension, 
+  * `.*` all files with the same basename, and
+  * `**` all subdirectories
+* The quotes are not needed by pushpull, but depending on the shell you use, parts of the string may be interpreted before they are passed as arguments. So quoting helps to avoid confusion.

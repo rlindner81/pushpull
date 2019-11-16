@@ -15,7 +15,7 @@ The first argument \`<filter>\` is mandatory. It should filter those files you w
 * \`**/*.yaml\` all files with \`.yaml\` extension in the current directory and subdirectories,
 * \`config/**/*.js\` all files with \`.js\` extension in all subdirectory of the \`./config\` directory.
 
-All further arguments have to be directives \`--push\`, \`--pull\`, or \`--switch\` and a (quoted) string. As the name suggests, \`push\` means pushing the string to the end of the line, \`pull\` is the opposite and \`switch\` does both in one pass. The directives are executed in the order they are given.
+All further arguments have to be directives \`--push\`, \`--pull\`, or \`--switch\` and a (quoted) string. As the name suggests, \`push\` means pushing the string to the end of the line, \`pull\` is the opposite and \`switch\` does both in one pass. The directives are executed on all matching files in the order they are given.
 `
   )
 }
