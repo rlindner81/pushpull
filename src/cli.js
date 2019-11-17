@@ -41,7 +41,6 @@ const parseArgs = args => {
       return ""
     })
   assert(rest.length === 0, `missed (partial) arguments '${rest}'`)
-  assert(directives.length !== 0, `need at least one directive`)
 
   return { filter, directives, silent }
 }

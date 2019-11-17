@@ -6,14 +6,14 @@ const { assert, escapeRegExp } = require("./helper")
 
 const IGNORE_DIRECTORIES = [".git", "node_modules"]
 
-const _processFilterDirectory = (dir, matchesFilepath, result = []) => {
-  return readdirAsync(dir, { withFileTypes: true })
+const _processFilterDirectory = (startDir, withSubDirs, matchesFilepath, result = []) => {
+  return readdirAsync(startDir, { withFileTypes: true })
     .then(fileEntries => {
       return Promise.all(
         fileEntries.map(fileEntry => {
-          const filepath = join(dir, fileEntry.name)
-          if (fileEntry.isDirectory() && IGNORE_DIRECTORIES.indexOf(fileEntry.name) === -1) {
-            return _processFilterDirectory(filepath, matchesFilepath, result)
+          const filepath = join(startDir, fileEntry.name)
+          if (fileEntry.isDirectory() && withSubDirs && IGNORE_DIRECTORIES.indexOf(fileEntry.name) === -1) {
+            return _processFilterDirectory(filepath, withSubDirs, matchesFilepath, result)
           } else if (fileEntry.isFile() && matchesFilepath(filepath)) {
             result.push(filepath)
           }
@@ -21,7 +21,7 @@ const _processFilterDirectory = (dir, matchesFilepath, result = []) => {
       )
     })
     .catch(err => {
-      assert(err.code !== "ENOENT", `invalid starting directory ${dir}`)
+      assert(err.code !== "ENOENT", `invalid starting directory ${startDir}`)
       throw err
     })
     .then(() => {
@@ -42,13 +42,23 @@ const _matchesFilepath = ({ dir, name, ext }) => {
   }
 }
 
-const _dirFixedPart = parts => parts.dir.replace(/^(.*?)\*\*.*$/, "$1")
-
-const processFilter = input => {
+const _prepare = input => {
   const inputNormalized = normalize(input)
   const inputAbsolute = isAbsolute(inputNormalized) ? inputNormalized : join(process.cwd(), inputNormalized)
   const inputParts = parse(inputAbsolute)
-  return _processFilterDirectory(_dirFixedPart(inputParts), _matchesFilepath(inputParts))
+
+  const { dir } = inputParts
+  let withSubDirs = false
+  const startDir = dir.replace(/\*\*.*$/g, () => {
+    withSubDirs = true
+    return ""
+  })
+  const matchesFilepath = _matchesFilepath(inputParts)
+  return [startDir, withSubDirs, matchesFilepath]
+}
+
+const processFilter = input => {
+  return _processFilterDirectory(..._prepare(input))
 }
 
 module.exports = processFilter
