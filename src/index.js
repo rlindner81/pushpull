@@ -1,5 +1,5 @@
 const processDirectives = require("./directives")
-const processFilter = require("./filters")
+const processFilter = require("./filter")
 
 module.exports = {
   processFilter,

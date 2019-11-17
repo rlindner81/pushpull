@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const processDirectives = require("./directives")
-const processFilter = require("./filters")
+const processFilter = require("./filter")
 const { assert, ordinal, noop } = require("./helper")
 
 const args = process.argv.slice(2)
