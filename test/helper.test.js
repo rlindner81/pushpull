@@ -22,7 +22,7 @@ test("!assert", () => {
 })
 
 test("ordinal", () => {
-  const numbers = [...Array(200).keys()].map(a => a - 100)
+  const numbers = [...Array(40).keys()].map(a => a - 20)
   expect(numbers.map(ordinal)).toMatchSnapshot()
 })
 
