@@ -1,5 +1,5 @@
 # PushPull
-Convenience tool to make your files content flexible.
+Convenience tool to make your files' content flexible.
 
 # Install
 ```
