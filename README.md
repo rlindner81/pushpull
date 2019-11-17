@@ -1,5 +1,5 @@
 # PushPull
-Convenience tool to make your files content flexible.
+Convenience tool to make your files' content flexible.
 
 # Install
 ```
@@ -17,7 +17,7 @@ package-lock=false # UPDATE_OFF
 
 package.json/scripts
 {
-  "update-package-lock": "pushpull .npmrc --push '# UPDATE_ON' --pull '# UPDATE_OFF' && npm install && npm dedupe && pushpull .npmrc --push '# UPDATE_OFF' --pull '# UPDATE_ON'"
+  "update-package-lock": "pushpull .npmrc --push # UPDATE_ON --pull # UPDATE_OFF && npm install && npm dedupe && pushpull .npmrc --push # UPDATE_OFF --pull # UPDATE_ON"
 }
 ```
 
@@ -29,7 +29,7 @@ package-lock=false # UPDATE
 
 package.json/scripts
 {
-  "update-package-lock": "pushpull .npmrc --switch '# UPDATE' && npm install && npm dedupe && pushpull .npmrc --switch '# UPDATE'"
+  "update-package-lock": "pushpull .npmrc --switch # UPDATE && npm install && npm dedupe && pushpull .npmrc --switch # UPDATE"
 }
 ```
 
@@ -53,4 +53,4 @@ The argument `--silent` disables all logging. Further arguments have to be direc
   * `**/` all subdirectories
 * `<filter>` works with both absolute and relative paths
 * `<filter>` will never expand into directories named `node_modules` or `.git`
-* the quotes are not needed by pushpull, but depending on the shell you use, parts of the string may be interpreted before they are passed to pushpull as arguments. So quoting helps to avoid confusion.
+* You need not use quotes in `package.json/scripts`. The quotes are useful for shell usage to ensure the strings get passed as arguments correctly.

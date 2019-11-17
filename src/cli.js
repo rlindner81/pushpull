@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const processDirectives = require("./directives")
-const processFilter = require("./filters")
+const processFilter = require("./filter")
 const { assert, ordinal, noop } = require("./helper")
 
 const args = process.argv.slice(2)
@@ -41,7 +41,6 @@ const parseArgs = args => {
       return ""
     })
   assert(rest.length === 0, `missed (partial) arguments '${rest}'`)
-  assert(directives.length !== 0, `need at least one directive`)
 
   return { filter, directives, silent }
 }

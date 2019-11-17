@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`escapeRegExp 1`] = `" !\\"#\\\\$%&'\\\\(\\\\)\\\\*\\\\+,-\\\\./0123456789:;<=>\\\\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\\\\[\\\\\\\\\\\\]\\\\^_\`abcdefghijklmnopqrstuvwxyz\\\\{\\\\|\\\\}~"`;
+
+exports[`ordinal 1`] = `
+Array [
+  "-20th",
+  "-19th",
+  "-18th",
+  "-17th",
+  "-16th",
+  "-15th",
+  "-14th",
+  "-13th",
+  "-12th",
+  "-11th",
+  "-10th",
+  "-9th",
+  "-8th",
+  "-7th",
+  "-6th",
+  "-5th",
+  "-4th",
+  "-3rd",
+  "-2nd",
+  "-1st",
+  "0th",
+  "1st",
+  "2nd",
+  "3rd",
+  "4th",
+  "5th",
+  "6th",
+  "7th",
+  "8th",
+  "9th",
+  "10th",
+  "11th",
+  "12th",
+  "13th",
+  "14th",
+  "15th",
+  "16th",
+  "17th",
+  "18th",
+  "19th",
+]
+`;
