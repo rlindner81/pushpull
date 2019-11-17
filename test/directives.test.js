@@ -1,13 +1,16 @@
 jest.mock("fs")
-const { readFile, writeFile } = require("fs")
+const fs = require("fs")
 const processDirectives = require("../src/directives")
+
+const mockReadFile = jest.spyOn(fs, "readFile")
+const mockWriteFile = jest.spyOn(fs, "writeFile")
 
 const mockDirectives = (input, directives) => {
   let result = null
-  readFile.mockImplementation((_, cb) => {
+  mockReadFile.mockImplementation((_, cb) => {
     cb(null, input)
   })
-  writeFile.mockImplementation((_, data, cb) => {
+  mockWriteFile.mockImplementation((_, data, cb) => {
     result = data
     cb(null)
   })
@@ -15,6 +18,11 @@ const mockDirectives = (input, directives) => {
     return result
   })
 }
+
+beforeEach(() => {
+  mockReadFile.mockClear()
+  mockWriteFile.mockClear()
+})
 
 test("process push directive", () => {
   return mockDirectives("   # 123 alalalasdas   ", [["push", "# 123"]]).then(result => {

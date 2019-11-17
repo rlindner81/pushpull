@@ -49,7 +49,8 @@ const _prepare = input => {
 
   const { dir } = inputParts
   let withSubDirs = false
-  const startDir = dir.replace(/\*\*.*$/g, () => {
+  const startDirRe = process.platform === "win32" ? /\\\*\*.*$/g : /\/\*\*.*$/g
+  const startDir = dir.replace(startDirRe, () => {
     withSubDirs = true
     return ""
   })
