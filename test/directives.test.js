@@ -12,8 +12,6 @@ const mockDirectives = (input, directives) => {
     cb(null)
   })
   return processDirectives(["_"], directives).then(() => {
-    readFile.mockReset()
-    writeFile.mockReset()
     return result
   })
 }
