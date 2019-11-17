@@ -1,6 +1,6 @@
 {
   "name": "pushpulljs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convenience tool to make your files content flexible",
   "bin": {
     "pushpull": "./src/cli.js"
@@ -12,7 +12,7 @@
   "scripts": {
     "lint": "eslint . --fix",
     "test": "jest",
-    "prepublish": "npm run lint && npm run test"
+    "prepublishOnly": "npm run lint && npm run test"
   },
   "engines": {
     "node": ">=8.0.0",
