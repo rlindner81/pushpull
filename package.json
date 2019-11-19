@@ -12,7 +12,8 @@
   "scripts": {
     "lint": "eslint . --fix",
     "test": "jest",
-    "prepublishOnly": "npm run lint && npm run test"
+    "prepublishOnly": "npm run lint && npm run test",
+    "shelltest": "node src/shelltest.js"
   },
   "engines": {
     "node": ">=8.0.0",
@@ -21,7 +22,7 @@
   "devDependencies": {
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.6.0",
-    "eslint-plugin-jest": "^23.0.4",
+    "eslint-plugin-jest": "^22.21.0",
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
     "prettier": "^1.19.1"

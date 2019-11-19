@@ -7,18 +7,18 @@ test("assert", () => {
   mockLog.mockClear()
   mockExit.mockClear()
   assert(false, "help")
-  expect(mockLog).toBeCalledTimes(1)
-  expect(mockLog).toBeCalledWith("error: help")
-  expect(mockExit).toBeCalledTimes(1)
-  expect(mockExit).toBeCalledWith(-1)
+  expect(mockLog).toHaveBeenCalledTimes(1)
+  expect(mockLog).toHaveBeenCalledWith("error: help")
+  expect(mockExit).toHaveBeenCalledTimes(1)
+  expect(mockExit).toHaveBeenCalledWith(-1)
 })
 
 test("!assert", () => {
   mockLog.mockClear()
   mockExit.mockClear()
   assert(true, "help")
-  expect(mockLog).toBeCalledTimes(0)
-  expect(mockExit).toBeCalledTimes(0)
+  expect(mockLog).toHaveBeenCalledTimes(0)
+  expect(mockExit).toHaveBeenCalledTimes(0)
 })
 
 test("ordinal", () => {

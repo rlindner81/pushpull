@@ -31,7 +31,7 @@ test("filter for single file", () => {
 test("filter with absolute filepath", () => {
   mockReaddir({ [basedir]: ["a"] })
   return processFilter(join(basedir, "a")).then(result => {
-    expect(mockCwd).toBeCalledTimes(0)
+    expect(mockCwd).toHaveBeenCalledTimes(0)
     expect(result).toEqual([join(basedir, "a")])
   })
 })
@@ -39,7 +39,7 @@ test("filter with absolute filepath", () => {
 test("filter with relative filepath", () => {
   mockReaddir({ [join("/cwd")]: ["a"] })
   return processFilter("a").then(result => {
-    expect(mockCwd).toBeCalledTimes(1)
+    expect(mockCwd).toHaveBeenCalledTimes(1)
     expect(result).toEqual([join("/cwd", "a")])
   })
 })
