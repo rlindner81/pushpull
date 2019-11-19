@@ -35,7 +35,7 @@ package.json/scripts
 
 # Syntax
 ```
-pushpull <filter> [--silent] [--push <arg>] [--pull <arg>] [--switch <arg>] ...
+usage: pushpull <filter> [--silent] [--push <arg>] [--pull <arg>] [--switch <arg>] ...
 ```
 The first option `<filter>` is mandatory. It should filter those files you want to change, i.e., 
 * `.eslintrc.yml` only the file `.eslintrc.yml` in the current directory,
