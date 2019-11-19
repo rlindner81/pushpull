@@ -54,3 +54,7 @@ The option `--silent` disables all logging. Further options have to be directive
   * `name.*` all files with the same basename `name`
 * `<filter>` works with both absolute and relative paths
 * `<filter>` will never expand into directories named `node_modules` or `.git`
+
+# TODO
+* Handle multiple filters (auto expanded on Mac)!
+* `*` filter for all files including those without extension
