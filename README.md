@@ -54,22 +54,3 @@ The option `--silent` disables all logging. Further options have to be directive
   * `name.*` all files with the same basename `name`
 * `<filter>` works with both absolute and relative paths
 * `<filter>` will never expand into directories named `node_modules` or `.git`
-
-### Platform shelltest
-MacOS (zsh)
-```
-platform is darwin
-expand unquoted: src/cli.js src/directives.js src/filter.js src/helper.js src/index.js src/shelltest.js test/directives.test.js test/filter.test.js test/helper.test.js
-expand single-quoted: **/*.js
-expand double-quoted: **/*.js
-hash arg unquoted:
-hash arg single-quoted: #ARG
-hash arg double-quoted: #ARG
-slash arg unquoted: //ARG
-slash arg single-quoted: //ARG
-slash arg double-quoted: //ARG
-dash arg unquoted: --ARG
-dash arg single-quoted: --ARG
-dash arg double-quoted: --ARG
-```
-* Use single or double quotes for `<filter>` and `<arg>`
