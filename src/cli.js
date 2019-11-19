@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const { showUsage, parseArgs } = require("./args");
+const { usage, parseArgs } = require("./args");
 const processDirectives = require("./directives");
 const processFilter = require("./filter");
 const { noop } = require("./helper");
@@ -8,7 +8,7 @@ const args = process.argv.slice(2);
 
 (() => {
   if (args.length < 1) {
-    showUsage();
+    console.log(usage());
     process.exit(-1);
   }
   const { filter, directives, silent } = parseArgs(args);
