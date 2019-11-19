@@ -20,8 +20,7 @@ const testAll = () => {
     expand: testStrings("**/*.js"),
     "hash-arg": testStrings("#ARG"),
     "slash-arg": testStrings("//ARG"),
-    "dash-arg": testStrings("--ARG"),
-    "amp-arg": testStrings("&&ARG")
+    "dash-arg": testStrings("--ARG")
   }
 }
 
