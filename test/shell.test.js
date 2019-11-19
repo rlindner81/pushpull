@@ -1,19 +1,19 @@
 // The point of this test is to collect the snapshots for different platforms
-const { execSync } = require("child_process")
+const { execSync } = require("child_process");
 
 const run = cmd => {
-  let result = null
+  let result = null;
   try {
-    result = execSync(cmd).toString()
+    result = execSync(cmd).toString();
   } catch (err) {
-    result = err.message
+    result = err.message;
   }
-  return result
-}
+  return result;
+};
 
 const testStrings = input => {
-  return [run(`echo unquoted: ${input}`), run(`echo single-quoted: '${input}'`), run(`echo double-quoted: "${input}"`)]
-}
+  return [run(`echo unquoted: ${input}`), run(`echo single-quoted: '${input}'`), run(`echo double-quoted: "${input}"`)];
+};
 
 const testAll = () => {
   return {
@@ -22,23 +22,23 @@ const testAll = () => {
     "slash-arg": testStrings("//ARG"),
     "dash-arg": testStrings("--ARG"),
     "amp-arg": testStrings("&&ARG")
-  }
-}
+  };
+};
 
 test("shelltest win32", () => {
   if (process.platform === "win32") {
-    expect(testAll()).toMatchSnapshot()
+    expect(testAll()).toMatchSnapshot();
   }
-})
+});
 
 test("shelltest darwin", () => {
   if (process.platform === "darwin") {
-    expect(testAll()).toMatchSnapshot()
+    expect(testAll()).toMatchSnapshot();
   }
-})
+});
 
 test("shelltest linux", () => {
   if (process.platform === "linux") {
-    expect(testAll()).toMatchSnapshot()
+    expect(testAll()).toMatchSnapshot();
   }
-})
+});
