@@ -3,7 +3,7 @@ Convenience tool to make your files' content flexible.
 
 # Install
 ```
-npm i pushpulljs --save-dev
+npm install pushpulljs --save-dev
 ```
 
 # Example
