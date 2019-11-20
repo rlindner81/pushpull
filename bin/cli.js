@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-const { usage, parseArgs } = require("./args")
-const processDirectives = require("./directives")
-const processFilter = require("./filter")
-const { noop } = require("./helper")
+const { usage, parseArgs } = require("../src/args")
+const processDirectives = require("../src/directives")
+const processFilter = require("../src/filter")
+const { noop } = require("../src/helper")
 
 const args = process.argv.slice(2)
 
