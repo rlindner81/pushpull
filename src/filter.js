@@ -34,8 +34,10 @@ const _matchesFilepath = ({ dir, name, ext }) => {
     process.platform === "win32"
       ? RegExp(`^${escapeRegExp(dir).replace(/\\\\\\\*\\\*/g, ".*?")}$`) // escaped version of \\**
       : RegExp(`^${escapeRegExp(dir).replace(/\/\\\*\\\*/g, ".*?")}$`) // escaped version of /**
-  const nameRe = RegExp(`^${escapeRegExp(name).replace(/\\\*/g, ".*?")}$`)
-  const extRe = RegExp(`^${escapeRegExp(ext).replace(/\\\*/g, ".*?")}$`)
+  const nameRe =
+    name.length === 0 ? /^$/ : name === "*" ? /^.*$/ : RegExp(`^${escapeRegExp(name).replace(/\\\*/g, ".*?")}$`)
+  const extRe =
+    ext.length === 0 ? /^$/ : ext === ".*" ? /^.*$/ : RegExp(`^${escapeRegExp(ext).replace(/\\\*/g, ".*?")}$`)
   return filepath => {
     const { dir, name, ext } = parse(filepath)
     return dirRe.test(dir) && nameRe.test(name) && extRe.test(ext)

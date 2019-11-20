@@ -55,3 +55,33 @@ test("filter withSubDir", () => {
     expect(result).toEqual([join("/cwd", "a.a"), join("/cwd", "a", "a.a"), join("/cwd", "a", "b", "a.a")])
   })
 })
+
+test("filter with all files expansion", () => {
+  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
+  return processFilter("*.*").then(result => {
+    expect(mockCwd).toHaveBeenCalledTimes(1)
+    expect(result).toEqual([
+      join("/cwd", "a"),
+      join("/cwd", "b"),
+      join("/cwd", "c"),
+      join("/cwd", ".a"),
+      join("/cwd", "a.a"),
+      join("/cwd", "a.")
+    ])
+  })
+})
+
+test("filter with all files with ext expansion", () => {
+  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
+  return processFilter("*.*").then(result => {
+    expect(mockCwd).toHaveBeenCalledTimes(1)
+    expect(result).toEqual([
+      join("/cwd", "a"),
+      join("/cwd", "b"),
+      join("/cwd", "c"),
+      join("/cwd", ".a"),
+      join("/cwd", "a.a"),
+      join("/cwd", "a.")
+    ])
+  })
+})

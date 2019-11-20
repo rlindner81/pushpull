@@ -17,7 +17,7 @@ package-lock=false #UPDATE_OFF
 
 package.json/scripts
 {
-  "update-package-lock": "pushpull .npmrc --push #UPDATE_ON --pull #UPDATE_OFF && npm install && npm dedupe && pushpull .npmrc --push #UPDATE_OFF --pull #UPDATE_ON"
+  "update-package-lock": "pushpull .npmrc --push '#UPDATE_ON' --pull '#UPDATE_OFF' && npm install && npm dedupe && pushpull .npmrc --push '#UPDATE_OFF' --pull '#UPDATE_ON'"
 }
 ```
 
@@ -29,32 +29,27 @@ package-lock=false #UPDATE
 
 package.json/scripts
 {
-  "update-package-lock": "pushpull .npmrc --switch #UPDATE && npm install && npm dedupe && pushpull .npmrc --switch #UPDATE"
+  "update-package-lock": "pushpull .npmrc --switch '#UPDATE' && npm install && npm dedupe && pushpull .npmrc --switch '#UPDATE'"
 }
 ```
 
 # Syntax
 ```
-usage: pushpull <filter> [--silent] [--push <arg>] [--pull <arg>] [--switch <arg>] ...
+usage: pushpull '<filter>' [--silent] [--push '<arg>'] [--pull '<arg>'] [--switch '<arg>'] ...
 ```
-The first option `<filter>` is mandatory. It should filter those files you want to change, i.e., 
+The first option `<filter>` is mandatory and can be followed directely by more `<filter>` options. It should filter those files you want to change, i.e., 
 * `.eslintrc.yml` only the file `.eslintrc.yml` in the current directory,
 * `*.yaml` all files with `.yaml` extension in the current directory,
 * `**/*.yaml` all files with `.yaml` extension in the current directory and subdirectories,
-* `config/**/*.js` all files with `.js` extension in all subdirectory of the `./config` directory.
+* `config/**/*.js` all files with `.js` extension in all subdirectory of the `config` directory.
 
-The option `--silent` disables all logging. Further options have to be directives `--push`, `--pull`, or `--switch` and an associated string argument `<arg>`. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. The directives are executed on all matching files in the order they are given.
+The option `--silent` disables all logging. Further options have to be directives `--push`, `--pull`, or `--switch` having an associated string argument `<arg>`. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. The directives are executed on all matching files in the order they are given. Quoting `<filter>` and `<arg>` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
 
 ### Notes
-* `<filter>` expands with the usual path logic
+* `<filter>` expands with a simplified glob logic that only considers the `*` wildcard
   * `**/` all subdirectories,
-  * `*` all files,
-  * `*.*` all files with an extension,
+  * `*.*` all files (including those starting with `.`),
   * `*.ext` all files with the same extension `.ext`, and
   * `name.*` all files with the same basename `name`
 * `<filter>` works with both absolute and relative paths
 * `<filter>` will never expand into directories named `node_modules` or `.git`
-
-# TODO
-* Handle multiple filters (auto expanded on Mac)!
-* `*` filter for all files including those without extension
