@@ -4,7 +4,9 @@ const { execSync } = require("child_process")
 const run = cmd => {
   let result = null
   try {
-    result = execSync(cmd).toString()
+    result = execSync(cmd, {
+      stdio: [null, "pipe", null]
+    }).toString()
   } catch (err) {
     result = err.message
   }
@@ -20,7 +22,8 @@ const testAll = () => {
     expand: testStrings("**/*.js"),
     "hash-arg": testStrings("#ARG"),
     "slash-arg": testStrings("//ARG"),
-    "dash-arg": testStrings("--ARG")
+    "dash-arg": testStrings("--ARG"),
+    "amp-arg": testStrings("&&ARG")
   }
 }
 

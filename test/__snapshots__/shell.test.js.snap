@@ -2,6 +2,18 @@
 
 exports[`shelltest win32 1`] = `
 Object {
+  "amp-arg": Array [
+    "Command failed: echo unquoted: &&ARG
+'ARG' is not recognized as an internal or external command,
+operable program or batch file.
+",
+    "Command failed: echo single-quoted: '&&ARG'
+'ARG'' is not recognized as an internal or external command,
+operable program or batch file.
+",
+    "double-quoted: \\"&&ARG\\"
+",
+  ],
   "dash-arg": Array [
     "unquoted: --ARG
 ",
