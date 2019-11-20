@@ -12,45 +12,44 @@ Let's say we don't want the users of some repostiory to update `package-lock.jso
 With PushPull this is easy. Just add appropriate comments to make your [.npmrc](./.npmrc) flexible.
 ```
 .npmrc
-package-lock=false # UPDATE_OFF
-# UPDATE_ON package-lock=true
+package-lock=false #UPDATE_OFF
+#UPDATE_ON package-lock=true
 
 package.json/scripts
 {
-  "update-package-lock": "pushpull .npmrc --push # UPDATE_ON --pull # UPDATE_OFF && npm install && npm dedupe && pushpull .npmrc --push # UPDATE_OFF --pull # UPDATE_ON"
+  "update-package-lock": "pushpull .npmrc --push '#UPDATE_ON' --pull '#UPDATE_OFF' && npm install && npm dedupe && pushpull .npmrc --push '#UPDATE_OFF' --pull '#UPDATE_ON'"
 }
 ```
 
 For this easy case, the `switch` directive would be even more appropriate. It does both `push` and `pull` of the same string in one pass.
 ```
 .npmrc
-package-lock=false # UPDATE
-# UPDATE package-lock=true
+package-lock=false #UPDATE
+#UPDATE package-lock=true
 
 package.json/scripts
 {
-  "update-package-lock": "pushpull .npmrc --switch # UPDATE && npm install && npm dedupe && pushpull .npmrc --switch # UPDATE"
+  "update-package-lock": "pushpull .npmrc --switch '#UPDATE' && npm install && npm dedupe && pushpull .npmrc --switch '#UPDATE'"
 }
 ```
 
 # Syntax
 ```
-pushpull <filter> [--silent] [--push '<string>'] [--pull '<string>'] [--switch '<string>'] ...
+usage: pushpull '<filter>' [--silent] [--push '<arg>'] [--pull '<arg>'] [--switch '<arg>'] ...
 ```
-The first argument `<filter>` is mandatory. It should filter those files you want to change, i.e., 
+The first option `<filter>` is mandatory. It should filter those files you want to change, i.e., 
 * `.eslintrc.yml` only the file `.eslintrc.yml` in the current directory,
 * `*.yaml` all files with `.yaml` extension in the current directory,
 * `**/*.yaml` all files with `.yaml` extension in the current directory and subdirectories,
-* `config/**/*.js` all files with `.js` extension in all subdirectory of the `./config` directory.
+* `config/**/*.js` all files with `.js` extension in all subdirectory of the `config` directory.
 
-The argument `--silent` disables all logging. Further arguments have to be directives `--push`, `--pull`, or `--switch` and a (quoted) string. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. The directives are executed on all matching files in the order they are given.
+The option `--silent` disables all logging. Further options have to be directives `--push`, `--pull`, or `--switch` having an associated string argument `<arg>`. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. The directives are executed on all matching files in the order they are given. Quoting `<filter>` and `<arg>` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
 
 ### Notes
-* `<filter>` only expands
-  * `*.*` all files,
-  * `*.` all files with the same extension, 
-  * `.*` all files with the same basename, and
-  * `**/` all subdirectories
+* `<filter>` expands with a simplified glob logic that only considers the `*` wildcard
+  * `**/` all subdirectories,
+  * `*.*` all files (including those starting with `.`),
+  * `*.ext` all files with the same extension `.ext`, and
+  * `name.*` all files with the same basename `name`
 * `<filter>` works with both absolute and relative paths
 * `<filter>` will never expand into directories named `node_modules` or `.git`
-* You need not use quotes in `package.json/scripts`. The quotes are useful for shell usage to ensure the strings get passed as arguments correctly.

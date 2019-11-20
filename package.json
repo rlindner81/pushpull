@@ -1,18 +1,20 @@
 {
   "name": "pushpulljs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convenience tool to make your files content flexible",
   "bin": {
-    "pushpull": "./src/cli.js"
+    "pushpull": "./bin/cli.js"
   },
   "main": "./src/index.js",
   "files": [
+    "bin",
     "src"
   ],
   "scripts": {
     "lint": "eslint . --fix",
     "test": "jest",
-    "prepublish": "npm run lint && npm run test"
+    "prepublishOnly": "npm run lint && npm run test",
+    "update-package-lock": "node bin/cli.js .npmrc --switch '#UPDATE' && npm i && npm ddp && node bin/cli.js .npmrc --switch '#UPDATE'"
   },
   "engines": {
     "node": ">=8.0.0",
@@ -20,8 +22,8 @@
   },
   "devDependencies": {
     "eslint": "^6.6.0",
-    "eslint-config-prettier": "^6.6.0",
-    "eslint-plugin-jest": "^23.0.4",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-jest": "^22.21.0",
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
     "prettier": "^1.19.1"
