@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`filter for generic read error 1`] = `"generic read error"`;
+
+exports[`filter for non-existent file 1`] = `"invalid starting directory \\\\cwd"`;

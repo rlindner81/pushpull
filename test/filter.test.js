@@ -17,8 +17,27 @@ const mockReaddir = hierarchy => {
   })
 }
 
+const mockFailingReaddir = err => {
+  readdir.mockImplementation((startDir, opts, cb) => {
+    cb(err)
+  })
+}
+
 beforeEach(() => {
   mockCwd.mockClear()
+})
+
+test("filter for non-existent file", () => {
+  const err = new Error("non-existent file")
+  err.code = "ENOENT"
+  mockFailingReaddir(err)
+  return expect(processFilter("bad")).rejects.toThrowErrorMatchingSnapshot()
+})
+
+test("filter for generic read error", () => {
+  const err = new Error("generic read error")
+  mockFailingReaddir(err)
+  return expect(processFilter("bad")).rejects.toThrowErrorMatchingSnapshot()
 })
 
 test("filter for single file", () => {
