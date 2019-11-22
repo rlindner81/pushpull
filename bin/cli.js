@@ -9,11 +9,17 @@ const args = process.argv.slice(2)
     console.log(usage())
     process.exit(-1)
   }
-  const { filter, directives, silent } = parseArgs(args)
-  const log = silent ? noop : console.log
+  Promise.resolve()
+    .then(() => {
+      const { filter, directives, silent } = parseArgs(args)
+      const log = silent ? noop : console.log
 
-  return processFilter(filter).then(filepaths => {
-    log(`filter ${filter} matches ${filepaths.length} file(s)`)
-    return processDirectives(filepaths, directives, log)
-  })
+      return processFilter(filter).then(filepaths => {
+        log(`filter ${filter} matches ${filepaths.length} file(s)`)
+        return processDirectives(filepaths, directives, log)
+      })
+    })
+    .catch(err => {
+      console.error("error: " + err.message)
+    })
 })()

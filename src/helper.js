@@ -1,7 +1,6 @@
 const assert = (condition, errorMessage) => {
   if (!condition) {
-    console.error("error: " + errorMessage)
-    process.exit(-1)
+    throw new Error(errorMessage)
   }
 }
 

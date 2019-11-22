@@ -2,7 +2,7 @@ const fs = require("fs")
 const { promisify } = require("util")
 const readFileAsync = promisify(fs.readFile)
 const writeFileAsync = promisify(fs.writeFile)
-const { assert, escapeRegExp, noop } = require("./")
+const { assert, escapeRegExp, noop } = require("./helper")
 
 const _pushRe = string => {
   const stringEscaped = escapeRegExp(string)
@@ -33,8 +33,7 @@ const processDirectives = (filepaths, directives, log = noop) => {
       case "switch":
         return [_switchRe(string), _switchReplacer]
       default:
-        assert(false, `encountered unknown directive ${type}`)
-        break
+        return assert(false, `encountered unknown directive ${type}`)
     }
   })
   return Promise.all(

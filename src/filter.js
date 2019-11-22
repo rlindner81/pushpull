@@ -2,7 +2,7 @@ const fs = require("fs")
 const { join, parse, normalize, isAbsolute } = require("path")
 const { promisify } = require("util")
 const readdirAsync = promisify(fs.readdir)
-const { assert, escapeRegExp } = require("./")
+const { assert, escapeRegExp } = require("./helper")
 
 const IGNORE_DIRECTORIES = [".git", "node_modules"]
 

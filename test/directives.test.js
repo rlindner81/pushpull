@@ -24,6 +24,10 @@ beforeEach(() => {
   mockWriteFile.mockClear()
 })
 
+test("process bad directive", () => {
+  return expect(() => mockDirectives("   # 123 alalalasdas   ", [["bad", "# 123"]])).toThrowErrorMatchingSnapshot()
+})
+
 test("process push directive", () => {
   return mockDirectives("   # 123 alalalasdas   ", [["push", "# 123"]]).then(result => {
     expect(result).toEqual("   alalalasdas # 123   ")

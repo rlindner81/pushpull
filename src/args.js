@@ -1,4 +1,4 @@
-const { assert, ordinal } = require("./")
+const { assert, ordinal } = require("./helper")
 
 const usage = () => {
   return `

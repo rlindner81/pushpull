@@ -1,24 +1,11 @@
-const { assert, ordinal, escapeRegExp, noop } = require("../src/helper")
-
-const mockLog = jest.spyOn(console, "error").mockImplementation(noop)
-const mockExit = jest.spyOn(process, "exit").mockImplementation(noop)
+const { assert, ordinal, escapeRegExp } = require("../src/helper")
 
 test("assert", () => {
-  mockLog.mockClear()
-  mockExit.mockClear()
-  assert(false, "help")
-  expect(mockLog).toHaveBeenCalledTimes(1)
-  expect(mockLog).toHaveBeenCalledWith("error: help")
-  expect(mockExit).toHaveBeenCalledTimes(1)
-  expect(mockExit).toHaveBeenCalledWith(-1)
+  expect(() => assert(false, "help")).toThrow("help")
 })
 
 test("!assert", () => {
-  mockLog.mockClear()
-  mockExit.mockClear()
-  assert(true, "help")
-  expect(mockLog).toHaveBeenCalledTimes(0)
-  expect(mockExit).toHaveBeenCalledTimes(0)
+  expect(() => assert(true, "help")).not.toThrow()
 })
 
 test("ordinal", () => {
