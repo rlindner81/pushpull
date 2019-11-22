@@ -2,7 +2,7 @@ const { assert, ordinal } = require("./helper")
 
 const usage = () => {
   return `
-usage: pushpull '<filter>' [--silent] [--push '<arg>'] [--pull '<arg>'] [--switch '<arg>'] ...
+usage: pushpull '<filter>' [--silent] [--push '<marker>'] [--pull '<marker>'] [--switch '<marker>'] ...
 
 The first option \`<filter>\` is mandatory. It should filter those files you want to change, i.e., 
 * \`.eslintrc.yml\` only the file \`.eslintrc.yml\` in the current directory,
@@ -10,7 +10,7 @@ The first option \`<filter>\` is mandatory. It should filter those files you wan
 * \`**/*.yaml\` all files with \`.yaml\` extension in the current directory and subdirectories,
 * \`config/**/*.js\` all files with \`.js\` extension in all subdirectory of the \`config\` directory.
 
-The option \`--silent\` disables all logging. Further options have to be directives \`--push\`, \`--pull\`, or \`--switch\` having an associated string argument \`<arg>\`. As the name suggests, \`push\` means pushing the string to the end of the line, \`pull\` is the opposite and \`switch\` does both in one pass. The directives are executed on all matching files in the order they are given. Quoting \`<filter>\` and \`<arg>\` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
+The option \`--silent\` disables all logging. Further options have to be directives \`--push\`, \`--pull\`, or \`--switch\` having an associated string argument \`<marker>\`. As the name suggests, \`push\` means pushing the string to the end of the line, \`pull\` is the opposite and \`switch\` does both in one pass. The directives are executed on all matching files in the order they are given. Quoting \`<filter>\` and \`<marker>\` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
 `
 }
 
