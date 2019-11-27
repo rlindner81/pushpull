@@ -29,7 +29,54 @@ const testAll = () => {
 
 test("shelltest win32", () => {
   if (process.platform === "win32") {
-    expect(testAll()).toMatchInlineSnapshot()
+    expect(testAll()).toMatchInlineSnapshot(`
+      Object {
+        "amp-arg": Array [
+          "Command failed: echo unquoted: &&ARG
+      'ARG' is not recognized as an internal or external command,
+      operable program or batch file.
+      ",
+          "Command failed: echo single-quoted: '&&ARG'
+      'ARG'' is not recognized as an internal or external command,
+      operable program or batch file.
+      ",
+          "double-quoted: \\"&&ARG\\"
+      ",
+        ],
+        "dash-arg": Array [
+          "unquoted: --ARG
+      ",
+          "single-quoted: '--ARG'
+      ",
+          "double-quoted: \\"--ARG\\"
+      ",
+        ],
+        "expand": Array [
+          "unquoted: **/*.js
+      ",
+          "single-quoted: '**/*.js'
+      ",
+          "double-quoted: \\"**/*.js\\"
+      ",
+        ],
+        "hash-arg": Array [
+          "unquoted: #ARG
+      ",
+          "single-quoted: '#ARG'
+      ",
+          "double-quoted: \\"#ARG\\"
+      ",
+        ],
+        "slash-arg": Array [
+          "unquoted: //ARG
+      ",
+          "single-quoted: '//ARG'
+      ",
+          "double-quoted: \\"//ARG\\"
+      ",
+        ],
+      }
+    `)
   }
 })
 
