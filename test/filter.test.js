@@ -31,7 +31,7 @@ test("filter for non-existent file", () => {
   const err = new Error("non-existent file")
   err.code = "ENOENT"
   mockFailingReaddir(err)
-  return expect(processFilter("bad")).rejects.toThrowErrorMatchingSnapshot()
+  return expect(processFilter("bad")).rejects.toThrow(`invalid starting directory ${join("/cwd")}`)
 })
 
 test("filter for generic read error", () => {
