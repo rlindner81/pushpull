@@ -1,9 +1,9 @@
 const processDirectives = require("./directives")
-const processFilter = require("./filter")
+const processFilters = require("./filter")
 const helper = require("./helper")
 
 module.exports = {
-  processFilter,
+  processFilters,
   processDirectives,
   ...helper
 }

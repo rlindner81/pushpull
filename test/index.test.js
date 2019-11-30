@@ -1,7 +1,7 @@
-const { processFilter, processDirectives, assert, ordinal, escapeRegExp, noop } = require("../src/")
+const { processFilters, processDirectives, assert, ordinal, escapeRegExp, noop } = require("../src/")
 
 test("exports", () => {
-  expect(processFilter).toBeInstanceOf(Function)
+  expect(processFilters).toBeInstanceOf(Function)
   expect(processDirectives).toBeInstanceOf(Function)
   expect(assert).toBeInstanceOf(Function)
   expect(ordinal).toBeInstanceOf(Function)

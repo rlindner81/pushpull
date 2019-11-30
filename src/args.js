@@ -19,12 +19,13 @@ const _unquoteArg = arg => {
 }
 
 const parseArgs = args => {
-  const filter = _unquoteArg(args[0])
+  const directivesIndex = args.findIndex(arg => arg.startsWith("--"))
+  const filters = args.slice(0, directivesIndex).map(_unquoteArg)
   let directives = []
   let silent = false
   let parsedOptions = 0
   const rest = args
-    .slice(1)
+    .slice(directivesIndex)
     .join(" ")
     .trim()
     .replace(/--(push|pull|switch|silent)\s*(.*?)\s*(?=$|--(?:push|pull|switch|silent))/g, (_, option, arg) => {
@@ -41,7 +42,7 @@ const parseArgs = args => {
     })
   assert(rest.length === 0, `missed (partial) arguments '${rest}'`)
 
-  return { filter, directives, silent }
+  return { filters, directives, silent }
 }
 
 module.exports = {
