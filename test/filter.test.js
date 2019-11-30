@@ -104,3 +104,11 @@ test("filter with all files with ext expansion", () => {
     ])
   })
 })
+
+test("filter with multiple inputs", () => {
+  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
+  return processFilter("a", "b", "*.a").then(result => {
+    expect(mockCwd).toHaveBeenCalledTimes(3)
+    expect(result).toEqual([join("/cwd", "a"), join("/cwd", "b"), join("/cwd", "a.a")])
+  })
+})

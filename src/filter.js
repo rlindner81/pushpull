@@ -60,8 +60,10 @@ const _prepare = input => {
   return [startDir, withSubDirs, matchesFilepath]
 }
 
-const processFilter = input => {
-  return _processFilterDirectory(..._prepare(input))
+const processFilter = (...inputs) => {
+  return Promise.all(inputs.map(input => _processFilterDirectory(..._prepare(input)))).then(outputs =>
+    outputs.reduce((prev, cur) => prev.concat(cur), [])
+  )
 }
 
 module.exports = processFilter
