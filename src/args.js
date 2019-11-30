@@ -20,27 +20,30 @@ const _unquoteArg = arg => {
 
 const parseArgs = args => {
   const directivesIndex = args.findIndex(arg => arg.startsWith("--"))
-  const filters = args.slice(0, directivesIndex).map(_unquoteArg)
+  const filters = (directivesIndex === -1 ? args : args.slice(0, directivesIndex)).map(_unquoteArg)
   let directives = []
   let silent = false
-  let parsedOptions = 0
-  const rest = args
-    .slice(directivesIndex)
-    .join(" ")
-    .trim()
-    .replace(/--(push|pull|switch|silent)\s*(.*?)\s*(?=$|--(?:push|pull|switch|silent))/g, (_, option, arg) => {
-      const unquotedArg = _unquoteArg(arg)
-      parsedOptions++
-      if (option === "silent") {
-        silent = true
-        return ""
-      }
-      assert(unquotedArg.length !== 0, `${ordinal(parsedOptions)} option --${option} has no associated argument`)
 
-      directives.push([option, unquotedArg])
-      return ""
-    })
-  assert(rest.length === 0, `missed (partial) arguments '${rest}'`)
+  if (directivesIndex !== -1) {
+    let parsedOptions = 0
+    const rest = args
+      .slice(directivesIndex)
+      .join(" ")
+      .trim()
+      .replace(/--(push|pull|switch|silent)\s*(.*?)\s*(?=$|--(?:push|pull|switch|silent))/g, (_, option, arg) => {
+        const unquotedArg = _unquoteArg(arg)
+        parsedOptions++
+        if (option === "silent") {
+          silent = true
+          return ""
+        }
+        assert(unquotedArg.length !== 0, `${ordinal(parsedOptions)} option --${option} has no associated argument`)
+
+        directives.push([option, unquotedArg])
+        return ""
+      })
+    assert(rest.length === 0, `missed (partial) arguments '${rest}'`)
+  }
 
   return { filters, directives, silent }
 }
