@@ -15,7 +15,10 @@ const args = process.argv.slice(2)
       const log = silent ? noop : console.log
 
       return processFilters(...filters).then(filepaths => {
-        log(`filter(s) ${filters.join(", ")} match ${filepaths.length} file(s)`)
+        log(
+          (filters.length === 1 ? `filter ${filters[0]} matches` : `filters ${filters.join(", ")} match`) +
+            (filepaths.length === 1 ? ` ${filepaths.length} file` : ` ${filepaths.length} files`)
+        )
         return processDirectives(filepaths, directives, log)
       })
     })
