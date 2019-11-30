@@ -10,15 +10,15 @@ test("usagelog", () => {
   expect(usageLog).toEqual(usageDoc)
 })
 
-test("basic parseArgs", () => {
-  const { filter, directives, silent } = parseArgs([
+test("args basic usage", () => {
+  const { filters, directives, silent } = parseArgs([
     "**/*.js",
     "--push #ABC",
     "--pull #DEF",
     "--silent",
     "--switch #GHK"
   ])
-  expect(filter).toEqual("**/*.js")
+  expect(filters).toEqual(["**/*.js"])
   expect(directives).toEqual([
     ["push", "#ABC"],
     ["pull", "#DEF"],
@@ -27,17 +27,29 @@ test("basic parseArgs", () => {
   expect(silent).toEqual(true)
 })
 
-test("break the silence", () => {
+test("args with silence", () => {
   const { silent } = parseArgs(["**/*.js", "--push #ABC", "--pull #DEF", "--switch #GHK"])
   expect(silent).toEqual(false)
 })
 
-test("basic parseArgs mixed quotes", () => {
-  const { filter, directives } = parseArgs(["'**/*.js'", '--push "#ABC"', "--pull '#DEF'", "--switch '#GHK'"])
-  expect(filter).toEqual("**/*.js")
+test("args with mixed quotes", () => {
+  const { filters, directives } = parseArgs(["'**/*.js'", '--push "#ABC"', "--pull '#DEF'", "--switch '#GHK'"])
+  expect(filters).toEqual(["**/*.js"])
   expect(directives).toEqual([
     ["push", "#ABC"],
     ["pull", "#DEF"],
     ["switch", "#GHK"]
   ])
+})
+
+test("args with multiple filters no directives", () => {
+  const { filters, directives } = parseArgs(["a", "b/**", "c.*"])
+  expect(filters).toEqual(["a", "b/**", "c.*"])
+  expect(directives).toEqual([])
+})
+
+test("args with multiple filters and directives", () => {
+  const { filters, directives } = parseArgs(["a", "b/**", "c.*", "--push", "#ABC"])
+  expect(filters).toEqual(["a", "b/**", "c.*"])
+  expect(directives).toEqual([["push", "#ABC"]])
 })

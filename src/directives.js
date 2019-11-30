@@ -33,8 +33,7 @@ const processDirectives = (filepaths, directives, log = noop) => {
       case "switch":
         return [_switchRe(string), _switchReplacer]
       default:
-        assert(false, `encountered unknown directive ${type}`)
-        break
+        return assert(false, `encountered unknown directive ${type}`)
     }
   })
   return Promise.all(

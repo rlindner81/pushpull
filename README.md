@@ -3,7 +3,7 @@ Convenience tool to make your files' content flexible.
 
 # Install
 ```
-npm i pushpulljs --save-dev
+npm install pushpulljs --save-dev
 ```
 
 # Example
@@ -35,15 +35,15 @@ package.json/scripts
 
 # Syntax
 ```
-usage: pushpull '<filter>' [--silent] [--push '<arg>'] [--pull '<arg>'] [--switch '<arg>'] ...
+usage: pushpull '<filter>' ['<filter>'] [--silent] [--push '<marker>'] [--pull '<marker>'] [--switch '<marker>'] ...
 ```
-The first option `<filter>` is mandatory. It should filter those files you want to change, i.e., 
+The first `<filter>` is mandatory and can be followed by more filters. Filters select files you want to change, i.e., 
 * `.eslintrc.yml` only the file `.eslintrc.yml` in the current directory,
 * `*.yaml` all files with `.yaml` extension in the current directory,
 * `**/*.yaml` all files with `.yaml` extension in the current directory and subdirectories,
 * `config/**/*.js` all files with `.js` extension in all subdirectory of the `config` directory.
 
-The option `--silent` disables all logging. Further options have to be directives `--push`, `--pull`, or `--switch` having an associated string argument `<arg>`. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. The directives are executed on all matching files in the order they are given. Quoting `<filter>` and `<arg>` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
+All arguments with `--` are options and start after all filters. The option `--silent` disables all logging. Further options have to be directives `--push`, `--pull`, or `--switch` having an associated string `<marker>`. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. The directives are executed on all matching files in the order they are given. Quoting `<filter>` and `<marker>` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
 
 ### Notes
 * `<filter>` expands with a simplified glob logic that only considers the `*` wildcard

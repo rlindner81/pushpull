@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 const { usage, parseArgs } = require("../src/args")
-const processDirectives = require("../src/directives")
-const processFilter = require("../src/filter")
-const { noop } = require("../src/helper")
+const { processDirectives, processFilters, noop } = require("../src/")
 
 const args = process.argv.slice(2)
 
@@ -11,11 +9,20 @@ const args = process.argv.slice(2)
     console.log(usage())
     process.exit(-1)
   }
-  const { filter, directives, silent } = parseArgs(args)
-  const log = silent ? noop : console.log
+  Promise.resolve()
+    .then(() => {
+      const { filters, directives, silent } = parseArgs(args)
+      const log = silent ? noop : console.log
 
-  return processFilter(filter).then(filepaths => {
-    log(`filter ${filter} matches ${filepaths.length} file(s)`)
-    return processDirectives(filepaths, directives, log)
-  })
+      return processFilters(...filters).then(filepaths => {
+        log(
+          (filters.length === 1 ? `filter ${filters[0]} matches` : `filters ${filters.join(", ")} match`) +
+            (filepaths.length === 1 ? ` ${filepaths.length} file` : ` ${filepaths.length} files`)
+        )
+        return processDirectives(filepaths, directives, log)
+      })
+    })
+    .catch(err => {
+      console.error("error: " + err.message)
+    })
 })()
