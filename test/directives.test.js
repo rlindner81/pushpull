@@ -94,3 +94,18 @@ test("don't pull/switch partial back matches with suffixes", () => {
     expect(result).toEqual(null)
   })
 })
+
+test("usage multiline", () => {
+  return mockDirectives(
+    `
+  <option>deleteall</option> <!--DELETE
+  -->
+`,
+    [["pull", "<!--DELETE"]]
+  ).then(result => {
+    expect(result).toEqual(`
+  <!--DELETE <option>deleteall</option>
+  -->
+`)
+  })
+})
