@@ -1,5 +1,5 @@
 # On/off
-Instead of `--push/--pull` you can often use the aliases `--on/--off` to make things more readable.
+Instead of `--push/--pull` you can use the aliases `--on/--off` to make things more readable.
 ```
 .npmrc (before)
 registry=https://registry.npmjs.org #NPM
@@ -28,7 +28,7 @@ package-lock=true #WRITE_LOCK
 Note that you should not mix `--switch` and `--push/--pull` with the same markers.
 
 # Multiline comments
-It's easy to use line comments as markers for pushpull, but you can also use multiline comments, by having the comment terminator on the next line.
+It's easy to use line comments as markers for PushPull, but you can also use multiline comments by having the comment terminator on the next line.
 ```
 config.xml (before)
 ...

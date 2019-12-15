@@ -7,7 +7,7 @@ npm install pushpulljs --save-dev
 ```
 
 # Example
-Let's say we don't want the users of some repostiory to update `package-lock.json` with every `npm install`, but we _do_ want to give an easy option `npm run update-package-lock` for consciously updating it.
+Let's say we don't want the users of some repostiory to update `package-lock.json` with every `npm install`, but we _do_ want to give an easy option `npm run update-lock` for consciously updating it.
 
 With PushPull this is easy. Just add appropriate comments to make your [.npmrc](./.npmrc) flexible.
 ```
@@ -17,7 +17,7 @@ package-lock=false
 
 package.json/scripts
 {
-  "update-package-lock": "pushpull .npmrc --push '#WRITE_LOCK' && npm up && npm ddp && pushpull .npmrc --pull '#WRITE_LOCK'"
+  "update-lock": "pushpull .npmrc --push '#WRITE_LOCK' && npm up && npm ddp && pushpull .npmrc --pull '#WRITE_LOCK'"
 }
 ```
 
