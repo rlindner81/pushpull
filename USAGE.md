@@ -11,7 +11,7 @@ pushpull config.xml --switch '#WRITE_LOCK'
 #WRITE_LOCK package-lock=false
 package-lock=true #WRITE_LOCK
 ```
-Note: that you should not mix `--switch` and `--push/--pull` with the same markers.
+Note that you should not mix `--switch` and `--push/--pull` with the same markers.
 
 # Multiline comments
 It's easy to use line comments as markers for pushpull, but you can also use multiline comments, by having the comment terminator on the next line.
