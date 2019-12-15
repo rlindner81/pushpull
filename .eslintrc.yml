@@ -12,3 +12,5 @@ extends:
   - "eslint:recommended"
   - "plugin:jest/recommended"
   - "plugin:prettier/recommended"
+rules:
+  strict: error

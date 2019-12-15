@@ -1,3 +1,5 @@
+"use strict"
+
 const assert = (condition, errorMessage) => {
   if (!condition) {
     throw new Error(errorMessage)

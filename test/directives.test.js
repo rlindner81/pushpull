@@ -1,3 +1,5 @@
+"use strict"
+
 jest.mock("fs")
 const fs = require("fs")
 const processDirectives = require("../src/directives")

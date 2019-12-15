@@ -1,3 +1,5 @@
+"use strict"
+
 // The point of this test is to collect the snapshots for different platforms
 const { execSync } = require("child_process")
 

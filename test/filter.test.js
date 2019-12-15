@@ -1,3 +1,5 @@
+"use strict"
+
 jest.mock("fs")
 const { readdir } = require("fs")
 const { join, normalize } = require("path")

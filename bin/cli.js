@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+"use strict"
+
 const { usage, parseArgs } = require("../src/args")
 const { processDirectives, processFilters, noop } = require("../src/")
 

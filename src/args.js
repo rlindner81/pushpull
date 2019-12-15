@@ -1,3 +1,5 @@
+"use strict"
+
 const { assert, ordinal } = require("./helper")
 
 const usage = () => {
