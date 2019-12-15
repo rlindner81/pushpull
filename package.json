@@ -14,7 +14,7 @@
     "lint": "eslint . --fix",
     "test": "jest",
     "prepublishOnly": "npm audit && npm run lint && npm run test",
-    "update-package-lock": "node bin/cli.js .npmrc --push '#WRITE_LOCK' && npm up && npm ddp && node bin/cli.js .npmrc --pull '#WRITE_LOCK'"
+    "update-package-lock": "node bin/cli.js .npmrc --on '#WRITE_LOCK' && npm up && npm ddp && node bin/cli.js .npmrc --off '#WRITE_LOCK'"
   },
   "engines": {
     "node": ">=8.0.0",

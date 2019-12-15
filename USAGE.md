@@ -1,3 +1,17 @@
+# On/off
+Instead of `--push/--pull` you can often use the aliases `--on/--off` to make things more readable.
+```
+.npmrc (before)
+registry=https://registry.npmjs.org #NPM
+#GITHUB registry=https://npm.pkg.github.com
+
+pushpull .npmrc --on '#GITHUB' --off '#NPM'
+
+.npmrc (after)
+#NPM registry=https://registry.npmjs.org
+registry=https://npm.pkg.github.com #GITHUB
+```
+
 # Switch
 If you have mutually exclusive states and a configuration that doesn't support contradicting options, you can use the switch statement.
 ```
@@ -5,7 +19,7 @@ If you have mutually exclusive states and a configuration that doesn't support c
 package-lock=false #WRITE_LOCK
 #WRITE_LOCK package-lock=true
 
-pushpull config.xml --switch '#WRITE_LOCK'
+pushpull .npmrc --switch '#WRITE_LOCK'
 
 .npmrc (after)
 #WRITE_LOCK package-lock=false
