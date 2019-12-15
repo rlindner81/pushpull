@@ -1,12 +1,12 @@
 # PushPull
 Convenience tool to make your files' content flexible.
 
-# Install
+## Install
 ```
 npm install pushpulljs --save-dev
 ```
 
-# Example
+## Example
 Let's say we don't want the users of some repostiory to update `package-lock.json` with every `npm install`, but we _do_ want to give an easy option `npm run update-lock` for consciously updating it.
 
 With PushPull this is easy. Just add appropriate comments to make your [.npmrc](./.npmrc) flexible.
@@ -23,7 +23,7 @@ package.json/scripts
 
 For more examples see [USAGE.md](./USAGE.md).
 
-# Syntax
+## Syntax
 ```
 usage: pushpull '<filter>' ['<filter>'] [--silent] [--push '<marker>'] [--pull '<marker>'] [--switch '<marker>'] ...
 ```

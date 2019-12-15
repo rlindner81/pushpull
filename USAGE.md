@@ -1,4 +1,6 @@
-# On/off
+# Usage examples
+
+## On/off
 Instead of `--push/--pull` you can use the aliases `--on/--off` to make things more readable.
 ```
 .npmrc (before)
@@ -12,7 +14,7 @@ pushpull .npmrc --on '#GITHUB' --off '#NPM'
 registry=https://npm.pkg.github.com #GITHUB
 ```
 
-# Switch
+## Switch
 If you have mutually exclusive states and a configuration that doesn't support contradicting options, you can use the switch statement.
 ```
 .npmrc (before)
@@ -27,7 +29,7 @@ package-lock=true #WRITE_LOCK
 ```
 Note that you should not mix `--switch` and `--push/--pull` with the same markers.
 
-# Multiline comments
+## Multiline comments
 It's easy to use line comments as markers for PushPull, but you can also use multiline comments by having the comment terminator on the next line.
 ```
 config.xml (before)
