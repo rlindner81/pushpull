@@ -41,13 +41,7 @@ const parseArgs = args => {
           }
           assert(unquotedArg.length !== 0, `${ordinal(parsedOptions)} option --${option} has no associated argument`)
 
-          if (option === "on") {
-            option = "push"
-          }
-          if (option === "off") {
-            option = "pull"
-          }
-          directives.push([option, unquotedArg])
+          directives.push([option === "on" ? "push" : option === "off" ? "pull" : option, unquotedArg])
           return ""
         }
       )
