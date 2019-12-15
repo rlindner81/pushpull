@@ -10,7 +10,7 @@ The first \`<filter>\` is mandatory and can be followed by more filters. Filters
 * \`**/*.yaml\` all files with \`.yaml\` extension in the current directory and subdirectories,
 * \`config/**/*.js\` all files with \`.js\` extension in all subdirectory of the \`config\` directory.
 
-All arguments with \`--\` are options and start after all filters. The option \`--silent\` disables all logging. Further options have to be directives \`--push\`, \`--pull\`, or \`--switch\` having an associated string \`<marker>\`. As the name suggests, \`push\` means pushing the string to the end of the line, \`pull\` is the opposite and \`switch\` does both in one pass. The directives are executed on all matching files in the order they are given. Quoting \`<filter>\` and \`<marker>\` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
+All arguments with \`--\` are options and start after all filters. The option \`--silent\` disables all logging. Further options have to be directives \`--push\`, \`--pull\`, or \`--switch\` having an associated string \`<marker>\`. As the name suggests, \`push\` means pushing the string to the end of the line, \`pull\` is the opposite and \`switch\` does both in one pass. You can also use the aliases \`--on\` for \`--push\` and \`--off\` for \`--pull\`. The directives are executed on all matching files in the order they are given. Quoting \`<filter>\` and \`<marker>\` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
 `
 }
 
@@ -30,18 +30,21 @@ const parseArgs = args => {
       .slice(optionsIndex)
       .join(" ")
       .trim()
-      .replace(/--(push|pull|switch|silent)\s*(.*?)\s*(?=$|--(?:push|pull|switch|silent))/g, (_, option, arg) => {
-        const unquotedArg = _unquoteArg(arg)
-        parsedOptions++
-        if (option === "silent") {
-          silent = true
+      .replace(
+        /--(push|pull|on|off|switch|silent)\s*(.*?)\s*(?=$|--(?:push|pull|on|off|switch|silent))/g,
+        (_, option, arg) => {
+          const unquotedArg = _unquoteArg(arg)
+          parsedOptions++
+          if (option === "silent") {
+            silent = true
+            return ""
+          }
+          assert(unquotedArg.length !== 0, `${ordinal(parsedOptions)} option --${option} has no associated argument`)
+
+          directives.push([option === "on" ? "push" : option === "off" ? "pull" : option, unquotedArg])
           return ""
         }
-        assert(unquotedArg.length !== 0, `${ordinal(parsedOptions)} option --${option} has no associated argument`)
-
-        directives.push([option, unquotedArg])
-        return ""
-      })
+      )
     assert(rest.length === 0, `missed (partial) arguments '${rest}'`)
   }
 

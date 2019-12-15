@@ -15,6 +15,8 @@ test("args basic usage", () => {
     "**/*.js",
     "--push #ABC",
     "--pull #DEF",
+    "--on #CBA",
+    "--off #FDE",
     "--silent",
     "--switch #GHK"
   ])
@@ -22,6 +24,8 @@ test("args basic usage", () => {
   expect(directives).toEqual([
     ["push", "#ABC"],
     ["pull", "#DEF"],
+    ["push", "#CBA"],
+    ["pull", "#FDE"],
     ["switch", "#GHK"]
   ])
   expect(silent).toEqual(true)
