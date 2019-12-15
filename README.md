@@ -21,6 +21,8 @@ package.json/scripts
 }
 ```
 
+For more examples see [USAGE.md](./USAGE.md).
+
 # Syntax
 ```
 usage: pushpull '<filter>' ['<filter>'] [--silent] [--push '<marker>'] [--pull '<marker>'] [--switch '<marker>'] ...
