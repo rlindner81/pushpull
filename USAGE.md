@@ -31,7 +31,7 @@ registry=https://npm.company.com #REG_CUSTOM
 ```
 
 ## Switch directive
-If you have mutually exclusive states and a configuration that doesn't support contradicting options, you can use the switch statement.
+If you have mutually exclusive states and a configuration that doesn't support contradicting options, you can use the `--switch` directive.
 ```
 .npmrc (before)
 package-lock=false #WRITE_LOCK
