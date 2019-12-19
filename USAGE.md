@@ -62,7 +62,7 @@ registry=https://npm.company.com #REG_CUSTOM
 ```
 
 ## Markers with escaped wildcards
-You can have markers with a literal `*` in their markers.
+You can also have markers with a literal `*` characters.
 ```
 example.js (before)
 const win=true /*WIN
