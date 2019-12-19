@@ -6,7 +6,10 @@ const readFileAsync = promisify(fs.readFile)
 const writeFileAsync = promisify(fs.writeFile)
 const { assert, escapeRegExp, noop } = require("./helper")
 
-const _prepareMarker = marker => escapeRegExp(marker).replace("\\*", "\\S*")
+const _prepareMarker = marker =>
+  escapeRegExp(marker)
+    .replace(/(?<!\\\\\\)\*/g, "\S*") // unescaped * => \S*
+    .replace(/\\\\\\\*/g, "\\*") // escaped * => *
 
 const _pushRe = marker => RegExp(`^(\\s*)(${_prepareMarker(marker)})(\\s+)(.*?)(\\s*)$`, "gm")
 
