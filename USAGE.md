@@ -30,6 +30,20 @@ pushpull .npmrc --off '#REG*' --on '#REG*CUSTOM'
 registry=https://npm.company.com #REG_CUSTOM
 ```
 
+## Markers with escaped wildcards
+You can have markers with a literal `*` in their markers.
+```
+example.js (before)
+const win=true /*WIN
+*/
+
+pushpull example.js --off '/\*WIN'
+
+example.js (after)
+/*WIN const win=true
+*/
+```
+
 ## Switch directive
 If you have mutually exclusive states and a configuration that doesn't support contradicting options, you can use the `--switch` directive.
 ```

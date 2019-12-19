@@ -157,3 +157,18 @@ test("usage wildcard markers", () => {
 `)
   })
 })
+
+test("usage escaped wildcard markers", () => {
+  return mockDirectives(
+    `
+    const win=true /*WIN
+    */
+`,
+    [["pull", "/\\*WIN"]]
+  ).then(result => {
+    expect(result).toEqual(`
+    /*WIN const win=true
+    */
+`)
+  })
+})
