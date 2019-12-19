@@ -111,3 +111,29 @@ test("usage multiline", () => {
 `)
   })
 })
+
+test("usage multiline with wildcard markers", () => {
+  return mockDirectives(
+    `
+    rog=true #ROG
+    registry=https://registry.npmjs.org #REG_NPM
+    registry=https://npm.pkg.github.com #REG_GITHUB
+    registry=a #REG_A
+    registry=b #REG_B
+    #REG_C registry=c
+`,
+    [
+      ["pull", "#REG*"],
+      ["push", "#REG*GITHUB"]
+    ]
+  ).then(result => {
+    expect(result).toEqual(`
+    rog=true #ROG
+    #REG_NPM registry=https://registry.npmjs.org
+    registry=https://npm.pkg.github.com #REG_GITHUB
+    #REG_A registry=a
+    #REG_B registry=b
+    #REG_C registry=c
+`)
+  })
+})

@@ -17,7 +17,7 @@ package-lock=false
 
 package.json/scripts
 {
-  "update-lock": "pushpull .npmrc --push '#WRITE_LOCK' && npm up && npm ddp && pushpull .npmrc --pull '#WRITE_LOCK'"
+  "update-lock": "pushpull .npmrc --on '#WRITE_LOCK' && npm i && npm ddp && pushpull .npmrc --off '#WRITE_LOCK'"
 }
 ```
 
