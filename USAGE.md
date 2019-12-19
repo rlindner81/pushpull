@@ -1,6 +1,6 @@
 # Usage examples
 
-## On/off
+## On/off aliases
 Instead of `--push/--pull` you can use the aliases `--on/--off` to make things more readable.
 ```
 .npmrc (before)
@@ -30,7 +30,7 @@ pushpull .npmrc --off '#REG*' --on '#REG*CUSTOM'
 registry=https://npm.company.com #REG_CUSTOM
 ```
 
-## Switch
+## Switch directive
 If you have mutually exclusive states and a configuration that doesn't support contradicting options, you can use the switch statement.
 ```
 .npmrc (before)
