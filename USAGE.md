@@ -14,36 +14,6 @@ pushpull .npmrc --on '#GITHUB' --off '#NPM'
 registry=https://npm.pkg.github.com #GITHUB
 ```
 
-## Markers with wildcards
-You can use the `*` wildcard in markers to hit multiple. This is useful if you don't know which of multiple options is currently enabled.
-```
-.npmrc (before)
-registry=https://registry.npmjs.org #REG_NPM
-#REG_GITHUB registry=https://npm.pkg.github.com
-#REG_CUSTOM registry=https://npm.company.com
-
-pushpull .npmrc --off '#REG*' --on '#REG*CUSTOM'
-
-.npmrc (after)
-#REG_NPM registry=https://registry.npmjs.org
-#REG_GITHUB registry=https://npm.pkg.github.com
-registry=https://npm.company.com #REG_CUSTOM
-```
-
-## Markers with escaped wildcards
-You can have markers with a literal `*` in their markers.
-```
-example.js (before)
-const win=true /*WIN
-*/
-
-pushpull example.js --off '/\*WIN'
-
-example.js (after)
-/*WIN const win=true
-*/
-```
-
 ## Switch directive
 If you have mutually exclusive states and a configuration that doesn't support contradicting options, you can use the `--switch` directive.
 ```
@@ -73,4 +43,34 @@ config.xml (after)
 ...
   <!--DELETE <option>deleteall</option>
   -->
+```
+
+## Markers with wildcards
+You can use the `*` wildcard in markers to hit multiple. This is useful if you don't know which of multiple options is currently enabled.
+```
+.npmrc (before)
+registry=https://registry.npmjs.org #REG_NPM
+#REG_GITHUB registry=https://npm.pkg.github.com
+#REG_CUSTOM registry=https://npm.company.com
+
+pushpull .npmrc --off '#REG*' --on '#REG*CUSTOM'
+
+.npmrc (after)
+#REG_NPM registry=https://registry.npmjs.org
+#REG_GITHUB registry=https://npm.pkg.github.com
+registry=https://npm.company.com #REG_CUSTOM
+```
+
+## Markers with escaped wildcards
+You can have markers with a literal `*` in their markers.
+```
+example.js (before)
+const win=true /*WIN
+*/
+
+pushpull example.js --off '/\*WIN'
+
+example.js (after)
+/*WIN const win=true
+*/
 ```
