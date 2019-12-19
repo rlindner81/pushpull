@@ -55,7 +55,33 @@ test("process switch directive", () => {
   })
 })
 
-test("allow string with slashes", () => {
+test("process wildcard markers", () => {
+  return mockDirectives(
+    `
+    rog=true #ROG
+    registry=https://registry.npmjs.org #REG_NPM
+    registry=https://npm.pkg.github.com #REG_GITHUB
+    registry=a #REG_A
+    registry=b #REG_B
+    #REG_C registry=c
+`,
+    [
+      ["pull", "#REG*"],
+      ["push", "#REG*GITHUB"]
+    ]
+  ).then(result => {
+    expect(result).toEqual(`
+    rog=true #ROG
+    #REG_NPM registry=https://registry.npmjs.org
+    registry=https://npm.pkg.github.com #REG_GITHUB
+    #REG_A registry=a
+    #REG_B registry=b
+    #REG_C registry=c
+`)
+  })
+})
+
+test("allow markers with slashes", () => {
   return mockDirectives("   alalalasdas // lalala // 123   ", [["switch", "// 123"]]).then(result => {
     expect(result).toEqual("   // 123 alalalasdas // lalala   ")
   })
@@ -112,28 +138,22 @@ test("usage multiline", () => {
   })
 })
 
-test("usage multiline with wildcard markers", () => {
+test("usage wildcard markers", () => {
   return mockDirectives(
     `
-    rog=true #ROG
     registry=https://registry.npmjs.org #REG_NPM
-    registry=https://npm.pkg.github.com #REG_GITHUB
-    registry=a #REG_A
-    registry=b #REG_B
-    #REG_C registry=c
+    #REG_GITHUB registry=https://npm.pkg.github.com
+    #REG_CUSTOM registry=https://npm.company.com
 `,
     [
       ["pull", "#REG*"],
-      ["push", "#REG*GITHUB"]
+      ["push", "#REG*CUSTOM"]
     ]
   ).then(result => {
     expect(result).toEqual(`
-    rog=true #ROG
     #REG_NPM registry=https://registry.npmjs.org
-    registry=https://npm.pkg.github.com #REG_GITHUB
-    #REG_A registry=a
-    #REG_B registry=b
-    #REG_C registry=c
+    #REG_GITHUB registry=https://npm.pkg.github.com
+    registry=https://npm.company.com #REG_CUSTOM
 `)
   })
 })
