@@ -33,7 +33,7 @@ The first `<filter>` is mandatory and can be followed by more filters. Filters s
 * `**/*.yaml` all files with `.yaml` extension in the current directory and subdirectories,
 * `config/**/*.js` all files with `.js` extension in all subdirectory of the `config` directory.
 
-All arguments with `--` are options and start after all filters. The option `--silent` disables all logging. Further options have to be directives `--push`, `--pull`, or `--switch` having an associated string `<marker>`. As the name suggests, `push` means pushing the string to the end of the line, `pull` is the opposite and `switch` does both in one pass. You can also use the aliases `--on` for `--push` and `--off` for `--pull`. The directives are executed on all matching files in the order they are given. Quoting `<filter>` and `<marker>` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
+All arguments with `--` are options and start after all filters. The option `--silent` disables all logging. Further options have to be directives `--push`, `--pull`, or `--switch` having an associated string `<marker>`. As the name suggests, `push` means pushing the marker to the end of the line, `pull` is the opposite and `switch` does both in one pass. You can also use the aliases `--on` for `--push` and `--off` for `--pull`. The directives are executed on all matching files in the order they are given. Quoting `<filter>` and `<marker>` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
 
 ### Notes
 * `<filter>` expands with a simplified glob logic that only considers the `*` wildcard
