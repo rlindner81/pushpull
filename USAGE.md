@@ -76,7 +76,7 @@ example.js (after)
 ```
 
 ## Markers with literal backslash
-Since backslash `\ ` is used to escape `*`, we need to use `\\` to get a literal backslash. The literal backslash does 
+Since backslash `\` is used to escape `*`, we need to use `\\` to get a literal backslash. The literal backslash does 
 _not_ escape any following `*`.
 ```
 example.js (before)
