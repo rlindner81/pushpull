@@ -74,3 +74,18 @@ example.js (after)
 /*WIN const win=true
 */
 ```
+
+## Markers with literal backslash
+Since backslash `\ ` is used to escape `*`, we need to use `\\` to get a literal backslash. The literal backslash does 
+_not_ escape any following `*`.
+```
+example.js (before)
+const win=true \\WIN
+
+pushpull example.js --off '\\\\WIN'
+# or
+pushpull example.js --off '\\\\*'
+
+example.js (after)
+\\WIN const win=true
+```

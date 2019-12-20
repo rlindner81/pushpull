@@ -179,7 +179,7 @@ test("usage multiline", () => {
   })
 })
 
-test("usage wildcard markers", () => {
+test("usage markers with wildcards", () => {
   return mockDirectives(
     `
     registry=https://registry.npmjs.org #REG_NPM
@@ -199,7 +199,7 @@ test("usage wildcard markers", () => {
   })
 })
 
-test("usage escaped wildcard markers", () => {
+test("usage markers with escaped wildcard", () => {
   return mockDirectives(
     `
     const win=true /*WIN
@@ -212,4 +212,12 @@ test("usage escaped wildcard markers", () => {
     */
 `)
   })
+})
+
+test("usage markers with literal backslash", () => {
+  return Promise.resolve()
+    .then(() => mockDirectives(`const win=true \\\\WIN`, [["pull", "\\\\\\\\WIN"]]))
+    .then(result => expect(result).toEqual(`\\\\WIN const win=true`))
+    .then(() => mockDirectives(`const win=true \\\\WIN`, [["pull", "\\\\\\\\*"]]))
+    .then(result => expect(result).toEqual(`\\\\WIN const win=true`))
 })
