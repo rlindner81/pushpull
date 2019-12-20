@@ -81,6 +81,47 @@ test("process wildcard markers", () => {
   })
 })
 
+test("process escaping", () => {
+  const testSet = `
+    a \\
+    b \\\\
+    c \\*
+    d \\\\*
+    e *
+`
+  return Promise.resolve()
+    .then(() => mockDirectives(testSet, [["pull", "\\\\\\*"]]))
+    .then(result =>
+      expect(result).toEqual(`
+    a \\
+    b \\\\
+    \\* c
+    d \\\\*
+    e *
+`)
+    )
+    .then(() => mockDirectives(testSet, [["pull", "\\\\*"]]))
+    .then(result =>
+      expect(result).toEqual(`
+    \\ a
+    \\\\ b
+    \\* c
+    \\\\* d
+    e *
+`)
+    )
+    .then(() => mockDirectives(testSet, [["pull", "\\*"]]))
+    .then(result =>
+      expect(result).toEqual(`
+    a \\
+    b \\\\
+    c \\*
+    d \\\\*
+    * e
+`)
+    )
+})
+
 test("allow markers with slashes", () => {
   return mockDirectives("   alalalasdas // lalala // 123   ", [["switch", "// 123"]]).then(result => {
     expect(result).toEqual("   // 123 alalalasdas // lalala   ")

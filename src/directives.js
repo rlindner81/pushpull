@@ -8,8 +8,9 @@ const { assert, escapeRegExp, noop } = require("./helper")
 
 const _prepareMarker = marker =>
   escapeRegExp(marker)
-    .replace(/(?<!\\\\)\\\*/g, "\\S*") // escapeRegExp(*) = \* => \S*
-    .replace(/\\\\\\\*/g, "\\*") // escapeRegExp(\*) = \\\* => \*
+    // goal is to unescape with \, i.e., escapeRegExp(\X) = \\(\?X) and replace it with \?X
+    // and expand normal *, i.e., escapeRegExp(*) = \\\* and replace it with \S*
+    .replace(/(?:\\\\((?:\\)?.)|\\\*)/g, (match, unescaped) => (unescaped !== undefined ? unescaped : "\\S*"))
 
 const _pushRe = marker => RegExp(`^(\\s*)(${_prepareMarker(marker)})(\\s+)(.*?)(\\s*)$`, "gm")
 
