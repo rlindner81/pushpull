@@ -21,28 +21,38 @@ package.json/scripts
 }
 ```
 
-For more examples see [USAGE.md](./USAGE.md).
-
-## Syntax
+## Usage
 ```
-usage: pushpull '<filter>' ['<filter>'] [--silent] [--push '<marker>'] [--pull '<marker>'] [--switch '<marker>'] ...
-```
-The first `<filter>` is mandatory and can be followed by more filters. Filters select files you want to change, i.e., 
-* `.eslintrc.yml` only the file `.eslintrc.yml` in the current directory,
-* `*.yaml` all files with `.yaml` extension in the current directory,
-* `**/*.yaml` all files with `.yaml` extension in the current directory and subdirectories,
-* `config/**/*.js` all files with `.js` extension in all subdirectory of the `config` directory.
+usage: pushpull '<files>' [<options>] [<directives>]
 
-All arguments with `--` are options and start after all filters. The option `--silent` disables all logging. Further options have to be directives `--push`, `--pull`, or `--switch` having an associated string `<marker>`. As the name suggests, `push` means pushing the marker to the end of the line, `pull` is the opposite and `switch` does both in one pass. You can also use the aliases `--on` for `--push` and `--off` for `--pull`. The directives are executed on all matching files in the order they are given. Quoting `<filter>` and `<marker>` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
+options:
+  --silent             disable logging
+
+directives:
+  --push '<marker>'    push all instances of marker on the start of any line to the end
+  --pull '<marker>'    pull all instances of marker from the end of any line to the start
+  --switch '<marker>'  apply both push and pull in one pass
+  --on '<marker>'      alias for push
+  --off '<marker>'     alias for pull
+
+examples:
+  pushpull '.npmrc' --on '#WRITE_LOCK'
+  pushpull '**/*.js' --off '//DEBUG'
+  pushpull 'config/**/*.yaml' 'config/**/.*rc' --silent --off '#OPTIONAL*'
+
+```
+For more detailed examples see [USAGE.md](./USAGE.md).
 
 ### Notes
-* `<filter>` expands with a simplified glob logic that only considers the `*` wildcard
+* quoting `<files>` and `<marker>` helps to be compatible across platforms
+* `<directives>` are applied in the order they are given
+* `<files>` expands `*` wildcards with a simplified glob logic
   * `**/` all subdirectories,
   * `*.*` all files (including those starting with `.`),
   * `*.ext` all files with the same extension `.ext`, and
   * `name.*` all files with the same basename `name`
 * `<filter>` works with both absolute and relative paths
 * `<filter>` will never expand into directories named `node_modules` or `.git`
-* `<marker>` can contain `*` wildcards that expand to cover non-whitespace
+* `<marker>` expands `*` wildcards to cover non-whitespace
 * `<marker>` can contain literal star `*` characters by using `\*`
 * `<marker>` can contain literal backslash `\` characters by using `\\`
