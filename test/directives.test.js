@@ -164,6 +164,17 @@ test("don't pull/switch partial back matches with suffixes", () => {
   })
 })
 
+test("don't push past line end", () => {
+  const testSet = `
+    aaa
+    bbb
+    ccc
+`
+  return Promise.resolve()
+    .then(() => mockDirectives(testSet, [["push", "aaa"]]))
+    .then(result => expect(result).toEqual(null))
+})
+
 test("usage multiline comments", () => {
   return mockDirectives(
     `
@@ -221,3 +232,4 @@ test("usage markers with literal backslash", () => {
     .then(() => mockDirectives(`const win=true \\\\WIN`, [["pull", "\\\\\\\\*"]]))
     .then(result => expect(result).toEqual(`\\\\WIN const win=true`))
 })
+

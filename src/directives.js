@@ -12,13 +12,13 @@ const _prepareMarker = marker =>
     // and expand normal *, i.e., escapeRegExp(*) = \\\* and replace it with \S*
     .replace(/(?:\\\\((?:\\)?.)|\\\*)/g, (match, unescaped) => (unescaped !== undefined ? unescaped : "\\S*"))
 
-const _pushRe = marker => RegExp(`^(\\s*)(${_prepareMarker(marker)})(\\s+)(.*?)(\\s*)$`, "gm")
+const _pushRe = marker => RegExp(`^(\\s*)(${_prepareMarker(marker)})([^\\S\\r\\n]+)(.*?)(\\s*)$`, "gm")
 
-const _pullRe = marker => RegExp(`^(\\s*)(.*?)(\\s+)(${_prepareMarker(marker)})(\\s*)$`, "gm")
+const _pullRe = marker => RegExp(`^(\\s*)(.*?)([^\\S\\r\\n]+)(${_prepareMarker(marker)})(\\s*)$`, "gm")
 
 const _switchRe = marker => {
   const preparedMarker = _prepareMarker(marker)
-  return RegExp(`^(\\s*)(?:(${preparedMarker})(\\s+)(.*?)|(.*?)(\\s+)(${preparedMarker}))(\\s*)$`, "gm")
+  return RegExp(`^(\\s*)(?:(${preparedMarker})([^\\S\\r\\n]+)(.*?)|(.*?)([^\\S\\r\\n]+)(${preparedMarker}))(\\s*)$`, "gm")
 }
 
 const _pushPullReplacer = (_, a, b, c, d, e) => a + d + c + b + e
