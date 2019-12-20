@@ -164,7 +164,7 @@ test("don't pull/switch partial back matches with suffixes", () => {
   })
 })
 
-test("usage multiline", () => {
+test("usage multiline comments", () => {
   return mockDirectives(
     `
   <option>deleteall</option> <!--DELETE
