@@ -43,3 +43,6 @@ All arguments with `--` are options and start after all filters. The option `--s
   * `name.*` all files with the same basename `name`
 * `<filter>` works with both absolute and relative paths
 * `<filter>` will never expand into directories named `node_modules` or `.git`
+* `<marker>` can contain `*` wildcards that expand to cover non-whitespace
+* `<marker>` can contain literal star `*` characters by using `\*`
+* `<marker>` can contain literal backslash `\` characters by using `\\`
