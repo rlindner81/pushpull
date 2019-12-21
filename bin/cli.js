@@ -21,7 +21,11 @@ const args = process.argv.slice(2)
           (filters.length === 1 ? `filter ${filters[0]} matches` : `filters ${filters.join(", ")} match`) +
             (filepaths.length === 1 ? ` ${filepaths.length} file` : ` ${filepaths.length} files`)
         )
-        return processDirectives(filepaths, directives, log)
+        return processDirectives(filepaths, directives).then(changes => {
+          changes.forEach(({ count, filepath }) => {
+            log(`${count} changes in ${filepath}`)
+          })
+        })
       })
     })
     .catch(err => {

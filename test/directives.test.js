@@ -232,4 +232,3 @@ test("usage markers with literal backslash", () => {
     .then(() => mockDirectives(`const win=true \\\\WIN`, [["pull", "\\\\\\\\*"]]))
     .then(result => expect(result).toEqual(`\\\\WIN const win=true`))
 })
-
