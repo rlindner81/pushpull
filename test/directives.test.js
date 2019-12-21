@@ -182,6 +182,20 @@ test("don't exchange with whitespace", () => {
     .then(result => expect(result).toEqual(null))
 })
 
+test("usage switch directive", () => {
+  return mockDirectives(
+    `
+    package-lock=false #WRITE_LOCK
+    #WRITE_LOCK package-lock=true
+`,
+    [["switch", "#WRITE_LOCK"]]
+  ).then(result => {
+    expect(result).toEqual(`
+    #WRITE_LOCK package-lock=false
+    package-lock=true #WRITE_LOCK
+`)
+  })
+})
 test("usage multiline comments", () => {
   return mockDirectives(
     `
