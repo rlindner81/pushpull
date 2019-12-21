@@ -12,14 +12,14 @@ const _prepareMarker = marker =>
     // and expand normal *, i.e., escapeRegExp(*) = \\\* and replace it with \S*
     .replace(/(?:\\\\((?:\\)?.)|\\\*)/g, (match, unescaped) => (unescaped !== undefined ? unescaped : "\\S*"))
 
-const _pushRe = marker => RegExp(`^(\\s*)(${_prepareMarker(marker)})([^\\S\\r\\n]+)(\\S+?)(\\s*)$`, "gm")
+const _pushRe = marker => RegExp(`^(\\s*)(${_prepareMarker(marker)})([^\\S\\r\\n]+)(.*?\\S)(\\s*)$`, "gm")
 
-const _pullRe = marker => RegExp(`^(\\s*)(\\S+?)([^\\S\\r\\n]+)(${_prepareMarker(marker)})(\\s*)$`, "gm")
+const _pullRe = marker => RegExp(`^(\\s*)(\\S.*?)([^\\S\\r\\n]+)(${_prepareMarker(marker)})(\\s*)$`, "gm")
 
 const _switchRe = marker => {
   const preparedMarker = _prepareMarker(marker)
   return RegExp(
-    `^(\\s*)(?:(${preparedMarker})([^\\S\\r\\n]+)(\\S+?)|(\\S+?)([^\\S\\r\\n]+)(${preparedMarker}))(\\s*)$`,
+    `^(\\s*)(?:(${preparedMarker})([^\\S\\r\\n]+)(.*?\\S)|(\\S.*?)([^\\S\\r\\n]+)(${preparedMarker}))(\\s*)$`,
     "gm"
   )
 }

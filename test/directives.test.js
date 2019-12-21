@@ -176,7 +176,7 @@ test("don't push past line end", () => {
 })
 
 test("don't exchange with whitespace", () => {
-  const testSet = `    aaa`
+  const testSet = `    aaa  `
   return Promise.resolve()
     .then(() => mockDirectives(testSet, [["pull", "aaa"]]))
     .then(result => expect(result).toEqual(null))
