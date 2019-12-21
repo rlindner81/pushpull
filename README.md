@@ -48,7 +48,7 @@ For more detailed examples see [USAGE.md](./USAGE.md).
 * `<directives>` are applied in the order they are given
 * `<files>` expands `*` wildcards with a simplified glob logic
   * `**/` matches all subdirectories
-  * `*.*` matches all files (including those starting with `.`)
+  * `*.*` matches all files, including those starting with `.`
   * `*.ext` matches files with the extension `.ext`
   * `name.*` matches files with the basename `name`
 * `<filter>` works with both absolute and relative paths
