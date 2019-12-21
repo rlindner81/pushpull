@@ -1,3 +1,5 @@
+"use strict"
+
 const { assert, ordinal, escapeRegExp } = require("../src/helper")
 
 test("assert", () => {

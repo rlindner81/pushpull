@@ -1,3 +1,5 @@
+"use strict"
+
 const fs = require("fs")
 const { join, parse, normalize, isAbsolute } = require("path")
 const { promisify } = require("util")

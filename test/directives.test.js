@@ -1,3 +1,5 @@
+"use strict"
+
 jest.mock("fs")
 const fs = require("fs")
 const processDirectives = require("../src/directives")
@@ -53,7 +55,74 @@ test("process switch directive", () => {
   })
 })
 
-test("allow string with slashes", () => {
+test("process wildcard markers", () => {
+  return mockDirectives(
+    `
+    rog=true #ROG
+    registry=https://registry.npmjs.org #REG_NPM
+    registry=https://npm.pkg.github.com #REG_GITHUB
+    registry=a #REG_A
+    registry=b #REG_B
+    #REG_C registry=c
+`,
+    [
+      ["pull", "#REG*"],
+      ["push", "#REG*GITHUB"]
+    ]
+  ).then(result => {
+    expect(result).toEqual(`
+    rog=true #ROG
+    #REG_NPM registry=https://registry.npmjs.org
+    registry=https://npm.pkg.github.com #REG_GITHUB
+    #REG_A registry=a
+    #REG_B registry=b
+    #REG_C registry=c
+`)
+  })
+})
+
+test("process escaping", () => {
+  const testSet = `
+    a \\
+    b \\\\
+    c \\*
+    d \\\\*
+    e *
+`
+  return Promise.resolve()
+    .then(() => mockDirectives(testSet, [["pull", "\\\\\\*"]]))
+    .then(result =>
+      expect(result).toEqual(`
+    a \\
+    b \\\\
+    \\* c
+    d \\\\*
+    e *
+`)
+    )
+    .then(() => mockDirectives(testSet, [["pull", "\\\\*"]]))
+    .then(result =>
+      expect(result).toEqual(`
+    \\ a
+    \\\\ b
+    \\* c
+    \\\\* d
+    e *
+`)
+    )
+    .then(() => mockDirectives(testSet, [["pull", "\\*"]]))
+    .then(result =>
+      expect(result).toEqual(`
+    a \\
+    b \\\\
+    c \\*
+    d \\\\*
+    * e
+`)
+    )
+})
+
+test("allow markers with slashes", () => {
   return mockDirectives("   alalalasdas // lalala // 123   ", [["switch", "// 123"]]).then(result => {
     expect(result).toEqual("   // 123 alalalasdas // lalala   ")
   })
@@ -95,7 +164,39 @@ test("don't pull/switch partial back matches with suffixes", () => {
   })
 })
 
-test("usage multiline", () => {
+test("don't push past line end", () => {
+  const testSet = `
+    aaa
+    bbb
+    ccc
+`
+  return Promise.resolve()
+    .then(() => mockDirectives(testSet, [["push", "aaa"]]))
+    .then(result => expect(result).toEqual(null))
+})
+
+test("don't exchange with whitespace", () => {
+  const testSet = `    aaa  `
+  return Promise.resolve()
+    .then(() => mockDirectives(testSet, [["pull", "aaa"]]))
+    .then(result => expect(result).toEqual(null))
+})
+
+test("usage switch directive", () => {
+  return mockDirectives(
+    `
+    package-lock=false #WRITE_LOCK
+    #WRITE_LOCK package-lock=true
+`,
+    [["switch", "#WRITE_LOCK"]]
+  ).then(result => {
+    expect(result).toEqual(`
+    #WRITE_LOCK package-lock=false
+    package-lock=true #WRITE_LOCK
+`)
+  })
+})
+test("usage multiline comments", () => {
   return mockDirectives(
     `
   <option>deleteall</option> <!--DELETE
@@ -108,4 +209,47 @@ test("usage multiline", () => {
   -->
 `)
   })
+})
+
+test("usage markers with wildcards", () => {
+  return mockDirectives(
+    `
+    registry=https://registry.npmjs.org #REG_NPM
+    #REG_GITHUB registry=https://npm.pkg.github.com
+    #REG_CUSTOM registry=https://npm.company.com
+`,
+    [
+      ["pull", "#REG*"],
+      ["push", "#REG*CUSTOM"]
+    ]
+  ).then(result => {
+    expect(result).toEqual(`
+    #REG_NPM registry=https://registry.npmjs.org
+    #REG_GITHUB registry=https://npm.pkg.github.com
+    registry=https://npm.company.com #REG_CUSTOM
+`)
+  })
+})
+
+test("usage markers with escaped wildcard", () => {
+  return mockDirectives(
+    `
+    const win=true /*WIN
+    */
+`,
+    [["pull", "/\\*WIN"]]
+  ).then(result => {
+    expect(result).toEqual(`
+    /*WIN const win=true
+    */
+`)
+  })
+})
+
+test("usage markers with literal backslash", () => {
+  return Promise.resolve()
+    .then(() => mockDirectives(`const win=true \\\\WIN`, [["pull", "\\\\\\\\WIN"]]))
+    .then(result => expect(result).toEqual(`\\\\WIN const win=true`))
+    .then(() => mockDirectives(`const win=true \\\\WIN`, [["pull", "\\\\\\\\*"]]))
+    .then(result => expect(result).toEqual(`\\\\WIN const win=true`))
 })

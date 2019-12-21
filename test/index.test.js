@@ -1,3 +1,5 @@
+"use strict"
+
 const { processFilters, processDirectives, assert, ordinal, escapeRegExp, noop } = require("../src/")
 
 test("exports", () => {

@@ -1,7 +1,7 @@
 {
   "name": "pushpulljs",
-  "version": "1.0.4",
-  "description": "Convenience tool to make your files content flexible",
+  "version": "1.0.5",
+  "description": "Convenience tool to make your files' content flexible",
   "bin": {
     "pushpull": "./bin/cli.js"
   },
@@ -14,7 +14,8 @@
     "lint": "eslint . --fix",
     "test": "jest",
     "prepublishOnly": "npm audit && npm run lint && npm run test",
-    "update-lock": "node bin/cli.js .npmrc --on '#WRITE_LOCK' && npm up && npm ddp && node bin/cli.js .npmrc --off '#WRITE_LOCK'"
+    "update-lock": "node bin/cli.js .npmrc --on '#WRITE_LOCK' && npm i && npm ddp && node bin/cli.js .npmrc --off '#WRITE_LOCK'",
+    "upgrade-lock": "node bin/cli.js .npmrc --on '#WRITE_LOCK' && shx rm -rf 'package-lock.json node_modules' && npm i && npm ddp && node bin/cli.js .npmrc --off '#WRITE_LOCK'"
   },
   "engines": {
     "node": ">=8.0.0",
@@ -26,7 +27,8 @@
     "eslint-plugin-jest": "^22.21.0",
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^24.9.0",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "shx": "^0.3.2"
   },
   "keywords": [
     "cli",

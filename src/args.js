@@ -1,18 +1,25 @@
+"use strict"
+
 const { assert, ordinal } = require("./helper")
 
-const usage = () => {
-  return `
-usage: pushpull '<filter>' ['<filter>'] [--silent] [--push '<marker>'] [--pull '<marker>'] [--switch '<marker>'] ...
+const usage = () => `
+usage: pushpull '<files>' [<options>] [<directives>]
 
-The first \`<filter>\` is mandatory and can be followed by more filters. Filters select files you want to change, i.e., 
-* \`.eslintrc.yml\` only the file \`.eslintrc.yml\` in the current directory,
-* \`*.yaml\` all files with \`.yaml\` extension in the current directory,
-* \`**/*.yaml\` all files with \`.yaml\` extension in the current directory and subdirectories,
-* \`config/**/*.js\` all files with \`.js\` extension in all subdirectory of the \`config\` directory.
+options:
+  --silent             disable logging
 
-All arguments with \`--\` are options and start after all filters. The option \`--silent\` disables all logging. Further options have to be directives \`--push\`, \`--pull\`, or \`--switch\` having an associated string \`<marker>\`. As the name suggests, \`push\` means pushing the string to the end of the line, \`pull\` is the opposite and \`switch\` does both in one pass. You can also use the aliases \`--on\` for \`--push\` and \`--off\` for \`--pull\`. The directives are executed on all matching files in the order they are given. Quoting \`<filter>\` and \`<marker>\` helps to be compatible across platforms, because shells tend to _interpret_ these strings.
+directives:
+  --push '<marker>'    push all instances of marker on the start of any line to the end
+  --pull '<marker>'    pull all instances of marker from the end of any line to the start
+  --switch '<marker>'  apply both push and pull in one pass
+  --on '<marker>'      alias for push
+  --off '<marker>'     alias for pull
+
+examples:
+  pushpull '.npmrc' --on '#WRITE_LOCK'
+  pushpull '**/*.js' --pull '//DEBUG'
+  pushpull 'config/**/*.yaml' 'config/**/.*rc' --silent --off '#OPTIONAL*'
 `
-}
 
 const _unquoteArg = arg => {
   return arg.replace(/^'(.+)'$/, "$1").replace(/^"(.+)"$/, "$1")
