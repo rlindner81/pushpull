@@ -22,13 +22,12 @@ const args = process.argv.slice(2)
           const matchedFilepathsCount = matchedFilepaths.length
           const markerChangesCount = markerChanges.reduce((prev, cur) => prev + cur.count, 0)
           const markerChangesFilepathsCount = markerChanges.length
-          log(
-            `moved ${markerChangesCount} marker${
-              markerChangesCount === 1 ? "" : "s"
-            } in ${markerChangesFilepathsCount} of ${matchedFilepathsCount} matched file${
-              matchedFilepathsCount === 1 ? "" : "s"
-            }`
-          )
+          let logline = [`moved ${markerChangesCount} marker${markerChangesCount === 1 ? "" : "s"} in`]
+          if (markerChangesFilepathsCount !== matchedFilepathsCount) {
+            logline.push(` ${markerChangesFilepathsCount} of`)
+          }
+          logline.push(` ${matchedFilepathsCount} matched file${matchedFilepathsCount === 1 ? "" : "s"}`)
+          log(logline.join(""))
         })
       })
     })
