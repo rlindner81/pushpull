@@ -51,8 +51,8 @@ For more detailed examples see [USAGE.md](./USAGE.md).
   * `*.*` matches all files, including those starting with `.`
   * `*.ext` matches files with the extension `.ext`
   * `name.*` matches files with the basename `name`
-* `<filter>` works with both absolute and relative paths
-* `<filter>` will never expand into directories named `node_modules` or `.git`
+* `<files>` works with both absolute and relative paths
+* `<files>` will never expand into directories named `node_modules` or `.git`
 * `<marker>` expands `*` wildcards to cover non-whitespace
 * `<marker>` can contain literal star `*` characters by using `\*`
 * `<marker>` can contain literal backslash `\` characters by using `\\`
