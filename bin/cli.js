@@ -11,20 +11,20 @@ const args = process.argv.slice(2)
     console.log(usage())
     process.exit(-1)
   }
+
   Promise.resolve()
     .then(() => {
       const { filters, directives, silent } = parseArgs(args)
       const log = silent ? noop : console.log
 
-      return processFilters(...filters).then(filepaths => {
-        log(
-          (filters.length === 1 ? `filter ${filters[0]} matches` : `filters ${filters.join(", ")} match`) +
-            (filepaths.length === 1 ? ` ${filepaths.length} file` : ` ${filepaths.length} files`)
-        )
-        return processDirectives(filepaths, directives).then(changes => {
-          changes.forEach(({ count, filepath }) => {
-            log(`${count} changes in ${filepath}`)
-          })
+      return processFilters(...filters).then(matchedFilepaths => {
+        return processDirectives(matchedFilepaths, directives).then(markerChanges => {
+          const matchedFilepathsCount = matchedFilepaths.length
+          const markerChangesCount = markerChanges.reduce((prev, cur) => prev + cur.count, 0)
+          const markerChangesFilepathsCount = markerChanges.length
+          log(
+            `moved ${markerChangesCount} markers in ${markerChangesFilepathsCount} of ${matchedFilepathsCount} matched files`
+          )
         })
       })
     })

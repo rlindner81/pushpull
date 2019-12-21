@@ -41,7 +41,7 @@ const processDirectives = (filepaths, directives) => {
         return assert(false, `encountered unknown directive ${type}`)
     }
   })
-  let changes = []
+  let markerChanges = []
   return Promise.all(
     filepaths.map(filepath => {
       let count = 0
@@ -54,12 +54,12 @@ const processDirectives = (filepaths, directives) => {
           })
         }
         if (count > 0) {
-          changes.push({ count, filepath })
+          markerChanges.push({ count, filepath })
           return writeFileAsync(filepath, data)
         }
       })
     })
-  ).then(() => changes)
+  ).then(() => markerChanges)
 }
 
 module.exports = processDirectives
