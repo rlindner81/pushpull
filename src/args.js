@@ -17,7 +17,7 @@ directives:
 
 examples:
   pushpull '.npmrc' --on '#WRITE_LOCK'
-  pushpull '**/*.js' --off '//DEBUG'
+  pushpull '**/*.js' --pull '//DEBUG'
   pushpull 'config/**/*.yaml' 'config/**/.*rc' --silent --off '#OPTIONAL*'
 `
 
