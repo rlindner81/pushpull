@@ -7,10 +7,9 @@ parserOptions:
   ecmaVersion: 2018
 plugins:
   - jest
-  - prettier
 extends:
   - "eslint:recommended"
   - "plugin:jest/recommended"
-  - "plugin:prettier/recommended"
+  - prettier
 rules:
   strict: error

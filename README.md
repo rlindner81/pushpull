@@ -1,15 +1,19 @@
 # PushPull
+
 Convenience tool to make your files' content flexible.
 
 ## Install
+
 ```
 npm install pushpulljs --save-dev
 ```
 
 ## Example
+
 Let's say we don't want the users of some repostiory to update `package-lock.json` with every `npm install`, but we _do_ want to give an easy option `npm run update-lock` for consciously updating it.
 
 With PushPull this is easy. Just add appropriate comments to make your [.npmrc](./.npmrc) flexible.
+
 ```
 .npmrc
 package-lock=false
@@ -22,6 +26,7 @@ package.json/scripts
 ```
 
 ## Usage
+
 ```
 usage: pushpull '<files>' [<options>] [<directives>]
 
@@ -41,18 +46,20 @@ examples:
   pushpull 'config/**/*.yaml' 'config/**/.*rc' --silent --off '#OPTIONAL*'
 
 ```
+
 For more detailed examples see [USAGE.md](./USAGE.md).
 
 ### Notes
-* quoting `<files>` and `<marker>` helps to be compatible across platforms
-* `<directives>` are applied in the order they are given
-* `<files>` expands `*` wildcards with a simplified glob logic
-  * `**/` matches all subdirectories
-  * `*.*` matches all files, including those starting with `.`
-  * `*.ext` matches files with the extension `.ext`
-  * `name.*` matches files with the basename `name`
-* `<files>` works with both absolute and relative paths
-* `<files>` will never expand into directories named `node_modules` or `.git`
-* `<marker>` expands `*` wildcards to cover non-whitespace
-* `<marker>` can contain literal star `*` characters by using `\*`
-* `<marker>` can contain literal backslash `\` characters by using `\\`
+
+- quoting `<files>` and `<marker>` helps to be compatible across platforms
+- `<directives>` are applied in the order they are given
+- `<files>` expands `*` wildcards with a simplified glob logic
+  - `**/` matches all subdirectories
+  - `*.*` matches all files, including those starting with `.`
+  - `*.ext` matches files with the extension `.ext`
+  - `name.*` matches files with the basename `name`
+- `<files>` works with both absolute and relative paths
+- `<files>` will never expand into directories named `node_modules` or `.git`
+- `<marker>` expands `*` wildcards to cover non-whitespace
+- `<marker>` can contain literal star `*` characters by using `\*`
+- `<marker>` can contain literal backslash `\` characters by using `\\`

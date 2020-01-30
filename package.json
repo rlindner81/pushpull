@@ -11,7 +11,9 @@
     "src"
   ],
   "scripts": {
-    "lint": "eslint . --fix",
+    "lint": "npm run prettier && npm run eslint",
+    "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
+    "eslint": "eslint . --fix",
     "test": "jest",
     "test:memheap": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage",
     "test:memleaks": "jest --runInBand --detectLeaks",
@@ -26,7 +28,6 @@
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-jest": "^22.21.0",
-    "eslint-plugin-prettier": "^3.1.2",
     "jest": "^25.1.0",
     "prettier": "^1.19.1",
     "shx": "^0.3.2",
