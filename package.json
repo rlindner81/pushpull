@@ -15,7 +15,7 @@
     "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
     "eslint": "eslint . --fix",
     "test": "jest",
-    "test:memheap": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage",
+    "test:memheap": "node --expose-gc ./node_modules/jest/bin/jest --runInBand --logHeapUsage",
     "test:memleaks": "jest --runInBand --detectLeaks",
     "prepublishOnly": "npm audit && npm run lint && npm run test && npm run test:memleaks",
     "upgrade-lock": "shx rm -rf package-lock.json node_modules && npm i --package-lock=true"
