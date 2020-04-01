@@ -8,23 +8,6 @@ Convenience tool to make your files' content flexible.
 npm install pushpulljs --save-dev
 ```
 
-## Example
-
-Let's say we don't want the users of some repostiory to update `package-lock.json` with every `npm install`, but we _do_ want to give an easy option `npm run update-lock` for consciously updating it.
-
-With PushPull this is easy. Just add appropriate comments to make your [.npmrc](./.npmrc) flexible.
-
-```
-.npmrc
-package-lock=false
-#WRITE_LOCK package-lock=true
-
-package.json/scripts
-{
-  "update-lock": "pushpull .npmrc --on '#WRITE_LOCK' && npm i && npm ddp && pushpull .npmrc --off '#WRITE_LOCK'"
-}
-```
-
 ## Usage
 
 ```
@@ -47,7 +30,8 @@ examples:
 
 ```
 
-For more detailed examples see [USAGE.md](./USAGE.md).
+For examples see [USAGE.md](./USAGE.md).
+
 
 ### Notes
 
