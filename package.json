@@ -1,6 +1,6 @@
 {
   "name": "pushpulljs",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Convenience tool to make your files' content flexible",
   "bin": {
     "pushpull": "./bin/cli.js"
@@ -11,11 +11,14 @@
     "src"
   ],
   "scripts": {
-    "lint": "eslint . --fix",
+    "lint": "npm run eslint && npm run prettier",
+    "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
+    "eslint": "eslint . --fix",
     "test": "jest",
-    "prepublishOnly": "npm audit && npm run lint && npm run test",
-    "update-lock": "node bin/cli.js .npmrc --on '#WRITE_LOCK' && npm i && npm ddp && node bin/cli.js .npmrc --off '#WRITE_LOCK'",
-    "upgrade-lock": "node bin/cli.js .npmrc --on '#WRITE_LOCK' && shx rm -rf 'package-lock.json node_modules' && npm i && npm ddp && node bin/cli.js .npmrc --off '#WRITE_LOCK'"
+    "test:memheap": "node --expose-gc ./node_modules/jest/bin/jest --runInBand --logHeapUsage",
+    "test:memleaks": "jest --runInBand --detectLeaks",
+    "prepublishOnly": "npm audit && npm run lint && npm run test && npm run test:memleaks",
+    "upgrade-lock": "shx rm -rf package-lock.json node_modules && npm i --package-lock=true"
   },
   "engines": {
     "node": ">=8.0.0",
@@ -23,12 +26,12 @@
   },
   "devDependencies": {
     "eslint": "^6.7.2",
-    "eslint-config-prettier": "^6.7.0",
+    "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-jest": "^22.21.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "jest": "^24.9.0",
-    "prettier": "^1.19.1",
-    "shx": "^0.3.2"
+    "jest": "^25.2.4",
+    "prettier": "^2.0.2",
+    "shx": "^0.3.2",
+    "weak-napi": "^1.0.3"
   },
   "keywords": [
     "cli",

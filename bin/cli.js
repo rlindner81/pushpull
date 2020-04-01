@@ -17,8 +17,8 @@ const args = process.argv.slice(2)
       const { filters, directives, silent } = parseArgs(args)
       const log = silent ? noop : console.log
 
-      return processFilters(...filters).then(matchedFilepaths => {
-        return processDirectives(matchedFilepaths, directives).then(markerChanges => {
+      return processFilters(...filters).then((matchedFilepaths) => {
+        return processDirectives(matchedFilepaths, directives).then((markerChanges) => {
           const matchedFilepathsCount = matchedFilepaths.length
           const markerChangesCount = markerChanges.reduce((prev, cur) => prev + cur.count, 0)
           const markerChangesFilepathsCount = markerChanges.length
@@ -31,7 +31,7 @@ const args = process.argv.slice(2)
         })
       })
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("error: " + err.message)
     })
 })()

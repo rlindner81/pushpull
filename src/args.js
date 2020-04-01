@@ -21,12 +21,12 @@ examples:
   pushpull 'config/**/*.yaml' 'config/**/.*rc' --silent --off '#OPTIONAL*'
 `
 
-const _unquoteArg = arg => {
+const _unquoteArg = (arg) => {
   return arg.replace(/^'(.+)'$/, "$1").replace(/^"(.+)"$/, "$1")
 }
 
-const parseArgs = args => {
-  const optionsIndex = args.findIndex(arg => arg.startsWith("--"))
+const parseArgs = (args) => {
+  const optionsIndex = args.findIndex((arg) => arg.startsWith("--"))
   const filters = (optionsIndex === -1 ? args : args.slice(0, optionsIndex)).map(_unquoteArg)
   let directives = []
   let silent = false
@@ -60,5 +60,5 @@ const parseArgs = args => {
 
 module.exports = {
   usage,
-  parseArgs
+  parseArgs,
 }

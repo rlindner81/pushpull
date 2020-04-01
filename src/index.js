@@ -7,5 +7,5 @@ const helper = require("./helper")
 module.exports = {
   processFilters,
   processDirectives,
-  ...helper
+  ...helper,
 }

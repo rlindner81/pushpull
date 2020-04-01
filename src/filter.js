@@ -10,9 +10,9 @@ const IGNORE_DIRECTORIES = [".git", "node_modules"]
 
 const _processFilterDirectory = (startDir, withSubDirs, matchesFilepath, result = []) => {
   return readdirAsync(startDir, { withFileTypes: true })
-    .then(fileEntries => {
+    .then((fileEntries) => {
       return Promise.all(
-        fileEntries.map(fileEntry => {
+        fileEntries.map((fileEntry) => {
           const filepath = join(startDir, fileEntry.name)
           if (fileEntry.isDirectory() && withSubDirs && IGNORE_DIRECTORIES.indexOf(fileEntry.name) === -1) {
             return _processFilterDirectory(filepath, withSubDirs, matchesFilepath, result)
@@ -22,7 +22,7 @@ const _processFilterDirectory = (startDir, withSubDirs, matchesFilepath, result 
         })
       )
     })
-    .catch(err => {
+    .catch((err) => {
       assert(err.code !== "ENOENT", `invalid starting directory ${startDir}`)
       throw err
     })
@@ -40,13 +40,13 @@ const _matchesFilepath = ({ dir, name, ext }) => {
     name.length === 0 ? /^$/ : name === "*" ? /^.*$/ : RegExp(`^${escapeRegExp(name).replace(/\\\*/g, ".*?")}$`)
   const extRe =
     ext.length === 0 ? /^$/ : ext === ".*" ? /^.*$/ : RegExp(`^${escapeRegExp(ext).replace(/\\\*/g, ".*?")}$`)
-  return filepath => {
+  return (filepath) => {
     const { dir, name, ext } = parse(filepath)
     return dirRe.test(dir) && nameRe.test(name) && extRe.test(ext)
   }
 }
 
-const _prepare = input => {
+const _prepare = (input) => {
   const inputNormalized = normalize(input)
   const inputAbsolute = isAbsolute(inputNormalized) ? inputNormalized : join(process.cwd(), inputNormalized)
   const inputParts = parse(inputAbsolute)
@@ -63,7 +63,7 @@ const _prepare = input => {
 }
 
 const processFilters = (...inputs) => {
-  return Promise.all(inputs.map(input => _processFilterDirectory(..._prepare(input)))).then(outputs =>
+  return Promise.all(inputs.map((input) => _processFilterDirectory(..._prepare(input)))).then((outputs) =>
     outputs.reduce((prev, cur) => prev.concat(cur), [])
   )
 }

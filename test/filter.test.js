@@ -8,9 +8,9 @@ const processFilters = require("../src/filter")
 const basedir = normalize(join(__dirname, ".."))
 const mockCwd = jest.spyOn(process, "cwd").mockImplementation(() => "/cwd")
 
-const mockReaddir = hierarchy => {
+const mockReaddir = (hierarchy) => {
   readdir.mockImplementation((startDir, opts, cb) => {
-    const entries = hierarchy[startDir].map(e => {
+    const entries = hierarchy[startDir].map((e) => {
       return typeof e === "string"
         ? { name: e, isDirectory: () => false, isFile: () => true }
         : { name: e.sub, isDirectory: () => true, isFile: () => false }
@@ -19,7 +19,7 @@ const mockReaddir = hierarchy => {
   })
 }
 
-const mockFailingReaddir = err => {
+const mockFailingReaddir = (err) => {
   readdir.mockImplementation((startDir, opts, cb) => {
     cb(err)
   })
@@ -44,14 +44,14 @@ test("filter for generic read error", () => {
 
 test("filter for single file", () => {
   mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
-  return processFilters("*.a").then(result => {
+  return processFilters("*.a").then((result) => {
     expect(result).toEqual([join("/cwd", "a.a")])
   })
 })
 
 test("filter with absolute filepath", () => {
   mockReaddir({ [basedir]: ["a"] })
-  return processFilters(join(basedir, "a")).then(result => {
+  return processFilters(join(basedir, "a")).then((result) => {
     expect(mockCwd).toHaveBeenCalledTimes(0)
     expect(result).toEqual([join(basedir, "a")])
   })
@@ -59,7 +59,7 @@ test("filter with absolute filepath", () => {
 
 test("filter with relative filepath", () => {
   mockReaddir({ [join("/cwd")]: ["a"] })
-  return processFilters("a").then(result => {
+  return processFilters("a").then((result) => {
     expect(mockCwd).toHaveBeenCalledTimes(1)
     expect(result).toEqual([join("/cwd", "a")])
   })
@@ -70,16 +70,16 @@ test("filter withSubDir", () => {
     [join("/cwd")]: [{ sub: "a" }, "a", "b", "c", ".a", "a.a", "a."],
     [join("/cwd", "a")]: [{ sub: "b" }, { sub: "c" }, "a", "b", "c", ".a", "a.a", "a."],
     [join("/cwd", "a", "b")]: ["a", "b", "c", ".a", "a.a", "a."],
-    [join("/cwd", "a", "c")]: ["a", "b", "c", ".a", "a."]
+    [join("/cwd", "a", "c")]: ["a", "b", "c", ".a", "a."],
   })
-  return processFilters("**/*.a").then(result => {
+  return processFilters("**/*.a").then((result) => {
     expect(result).toEqual([join("/cwd", "a.a"), join("/cwd", "a", "a.a"), join("/cwd", "a", "b", "a.a")])
   })
 })
 
 test("filter with all files expansion", () => {
   mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
-  return processFilters("*.*").then(result => {
+  return processFilters("*.*").then((result) => {
     expect(mockCwd).toHaveBeenCalledTimes(1)
     expect(result).toEqual([
       join("/cwd", "a"),
@@ -87,14 +87,14 @@ test("filter with all files expansion", () => {
       join("/cwd", "c"),
       join("/cwd", ".a"),
       join("/cwd", "a.a"),
-      join("/cwd", "a.")
+      join("/cwd", "a."),
     ])
   })
 })
 
 test("filter with all files with ext expansion", () => {
   mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
-  return processFilters("*.*").then(result => {
+  return processFilters("*.*").then((result) => {
     expect(mockCwd).toHaveBeenCalledTimes(1)
     expect(result).toEqual([
       join("/cwd", "a"),
@@ -102,14 +102,14 @@ test("filter with all files with ext expansion", () => {
       join("/cwd", "c"),
       join("/cwd", ".a"),
       join("/cwd", "a.a"),
-      join("/cwd", "a.")
+      join("/cwd", "a."),
     ])
   })
 })
 
 test("filter with multiple inputs", () => {
   mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
-  return processFilters("a", "b", "*.a").then(result => {
+  return processFilters("a", "b", "*.a").then((result) => {
     expect(mockCwd).toHaveBeenCalledTimes(3)
     expect(result).toEqual([join("/cwd", "a"), join("/cwd", "b"), join("/cwd", "a.a")])
   })

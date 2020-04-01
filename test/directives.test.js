@@ -31,13 +31,13 @@ test("process bad directive", () => {
 })
 
 test("process push directive", () => {
-  return mockDirectives("   # 123 alalalasdas   ", [["push", "# 123"]]).then(result => {
+  return mockDirectives("   # 123 alalalasdas   ", [["push", "# 123"]]).then((result) => {
     expect(result).toEqual("   alalalasdas # 123   ")
   })
 })
 
 test("process pull directive", () => {
-  return mockDirectives("   alalalasdas # 123   ", [["pull", "# 123"]]).then(result => {
+  return mockDirectives("   alalalasdas # 123   ", [["pull", "# 123"]]).then((result) => {
     expect(result).toEqual("   # 123 alalalasdas   ")
   })
 })
@@ -47,7 +47,7 @@ test("process switch directive", () => {
     `   alalalasdas # 123   
    # 123 alalalasdas   `,
     [["switch", "# 123"]]
-  ).then(result => {
+  ).then((result) => {
     expect(result).toEqual(
       `   # 123 alalalasdas   
    alalalasdas # 123   `
@@ -67,9 +67,9 @@ test("process wildcard markers", () => {
 `,
     [
       ["pull", "#REG*"],
-      ["push", "#REG*GITHUB"]
+      ["push", "#REG*GITHUB"],
     ]
-  ).then(result => {
+  ).then((result) => {
     expect(result).toEqual(`
     rog=true #ROG
     #REG_NPM registry=https://registry.npmjs.org
@@ -91,7 +91,7 @@ test("process escaping", () => {
 `
   return Promise.resolve()
     .then(() => mockDirectives(testSet, [["pull", "\\\\\\*"]]))
-    .then(result =>
+    .then((result) =>
       expect(result).toEqual(`
     a \\
     b \\\\
@@ -101,7 +101,7 @@ test("process escaping", () => {
 `)
     )
     .then(() => mockDirectives(testSet, [["pull", "\\\\*"]]))
-    .then(result =>
+    .then((result) =>
       expect(result).toEqual(`
     \\ a
     \\\\ b
@@ -111,7 +111,7 @@ test("process escaping", () => {
 `)
     )
     .then(() => mockDirectives(testSet, [["pull", "\\*"]]))
-    .then(result =>
+    .then((result) =>
       expect(result).toEqual(`
     a \\
     b \\\\
@@ -123,7 +123,7 @@ test("process escaping", () => {
 })
 
 test("allow markers with slashes", () => {
-  return mockDirectives("   alalalasdas // lalala // 123   ", [["switch", "// 123"]]).then(result => {
+  return mockDirectives("   alalalasdas // lalala // 123   ", [["switch", "// 123"]]).then((result) => {
     expect(result).toEqual("   // 123 alalalasdas // lalala   ")
   })
 })
@@ -131,8 +131,8 @@ test("allow markers with slashes", () => {
 test("don't push/switch partial front matches with prefixes", () => {
   return mockDirectives("A_// LALA alalalasdas // lalala", [
     ["push", "// LALA"],
-    ["switch", "// LALA"]
-  ]).then(result => {
+    ["switch", "// LALA"],
+  ]).then((result) => {
     expect(result).toEqual(null)
   })
 })
@@ -140,8 +140,8 @@ test("don't push/switch partial front matches with prefixes", () => {
 test("don't push/switch partial front matches with suffixes", () => {
   return mockDirectives("// LALA_A alalalasdas // lalala", [
     ["push", "// LALA"],
-    ["switch", "// LALA"]
-  ]).then(result => {
+    ["switch", "// LALA"],
+  ]).then((result) => {
     expect(result).toEqual(null)
   })
 })
@@ -149,8 +149,8 @@ test("don't push/switch partial front matches with suffixes", () => {
 test("don't pull/switch partial back matches with prefixes", () => {
   return mockDirectives("alalalasdas // lalala A_// LALA", [
     ["pull", "// LALA"],
-    ["switch", "// LALA"]
-  ]).then(result => {
+    ["switch", "// LALA"],
+  ]).then((result) => {
     expect(result).toEqual(null)
   })
 })
@@ -158,8 +158,8 @@ test("don't pull/switch partial back matches with prefixes", () => {
 test("don't pull/switch partial back matches with suffixes", () => {
   return mockDirectives("alalalasdas // lalala // LALA_A", [
     ["pull", "// LALA"],
-    ["switch", "// LALA"]
-  ]).then(result => {
+    ["switch", "// LALA"],
+  ]).then((result) => {
     expect(result).toEqual(null)
   })
 })
@@ -172,14 +172,14 @@ test("don't push past line end", () => {
 `
   return Promise.resolve()
     .then(() => mockDirectives(testSet, [["push", "aaa"]]))
-    .then(result => expect(result).toEqual(null))
+    .then((result) => expect(result).toEqual(null))
 })
 
 test("don't exchange with whitespace", () => {
   const testSet = `    aaa  `
   return Promise.resolve()
     .then(() => mockDirectives(testSet, [["pull", "aaa"]]))
-    .then(result => expect(result).toEqual(null))
+    .then((result) => expect(result).toEqual(null))
 })
 
 test("usage switch directive", () => {
@@ -189,7 +189,7 @@ test("usage switch directive", () => {
     #WRITE_LOCK package-lock=true
 `,
     [["switch", "#WRITE_LOCK"]]
-  ).then(result => {
+  ).then((result) => {
     expect(result).toEqual(`
     #WRITE_LOCK package-lock=false
     package-lock=true #WRITE_LOCK
@@ -203,7 +203,7 @@ test("usage multiline comments", () => {
   -->
 `,
     [["pull", "<!--DELETE"]]
-  ).then(result => {
+  ).then((result) => {
     expect(result).toEqual(`
   <!--DELETE <option>deleteall</option>
   -->
@@ -220,9 +220,9 @@ test("usage markers with wildcards", () => {
 `,
     [
       ["pull", "#REG*"],
-      ["push", "#REG*CUSTOM"]
+      ["push", "#REG*CUSTOM"],
     ]
-  ).then(result => {
+  ).then((result) => {
     expect(result).toEqual(`
     #REG_NPM registry=https://registry.npmjs.org
     #REG_GITHUB registry=https://npm.pkg.github.com
@@ -238,7 +238,7 @@ test("usage markers with escaped wildcard", () => {
     */
 `,
     [["pull", "/\\*WIN"]]
-  ).then(result => {
+  ).then((result) => {
     expect(result).toEqual(`
     /*WIN const win=true
     */
@@ -249,7 +249,7 @@ test("usage markers with escaped wildcard", () => {
 test("usage markers with literal backslash", () => {
   return Promise.resolve()
     .then(() => mockDirectives(`const win=true \\\\WIN`, [["pull", "\\\\\\\\WIN"]]))
-    .then(result => expect(result).toEqual(`\\\\WIN const win=true`))
+    .then((result) => expect(result).toEqual(`\\\\WIN const win=true`))
     .then(() => mockDirectives(`const win=true \\\\WIN`, [["pull", "\\\\\\\\*"]]))
-    .then(result => expect(result).toEqual(`\\\\WIN const win=true`))
+    .then((result) => expect(result).toEqual(`\\\\WIN const win=true`))
 })

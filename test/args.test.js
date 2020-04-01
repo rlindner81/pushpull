@@ -6,7 +6,7 @@ const { usage, parseArgs } = require("../src/args")
 
 test("usagelog", () => {
   const readme = readFileSync(join(__dirname, "..", "README.md")).toString()
-  const syntaxRe = /# Usage\n```([\w\W]*?)\n```/
+  const syntaxRe = /## Usage\n\n```([\w\W]*?)\n```/
   const usageDoc = syntaxRe.exec(readme)[1]
   const usageLog = usage()
   expect(usageLog).toEqual(usageDoc)
@@ -20,7 +20,7 @@ test("args basic usage", () => {
     "--on #CBA",
     "--off #FDE",
     "--silent",
-    "--switch #GHK"
+    "--switch #GHK",
   ])
   expect(filters).toEqual(["**/*.js"])
   expect(directives).toEqual([
@@ -28,7 +28,7 @@ test("args basic usage", () => {
     ["pull", "#DEF"],
     ["push", "#CBA"],
     ["pull", "#FDE"],
-    ["switch", "#GHK"]
+    ["switch", "#GHK"],
   ])
   expect(silent).toEqual(true)
 })
@@ -44,7 +44,7 @@ test("args with mixed quotes", () => {
   expect(directives).toEqual([
     ["push", "#ABC"],
     ["pull", "#DEF"],
-    ["switch", "#GHK"]
+    ["switch", "#GHK"],
   ])
 })
 
