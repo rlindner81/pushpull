@@ -3,11 +3,11 @@
 // The point of this test is to collect the snapshots for different platforms
 const { execSync } = require("child_process")
 
-const run = cmd => {
+const run = (cmd) => {
   let result = null
   try {
     result = execSync(cmd, {
-      stdio: [null, "pipe", null]
+      stdio: [null, "pipe", null],
     }).toString()
   } catch (err) {
     result = err.message
@@ -15,7 +15,7 @@ const run = cmd => {
   return result
 }
 
-const testStrings = input => {
+const testStrings = (input) => {
   return [run(`echo unquoted: ${input}`), run(`echo single-quoted: '${input}'`), run(`echo double-quoted: "${input}"`)]
 }
 
@@ -25,7 +25,7 @@ const testAll = () => {
     "hash-arg": testStrings("#ARG"),
     "slash-arg": testStrings("//ARG"),
     "dash-arg": testStrings("--ARG"),
-    "amp-arg": testStrings("&&ARG")
+    "amp-arg": testStrings("&&ARG"),
   }
 }
 

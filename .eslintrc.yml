@@ -12,4 +12,4 @@ extends:
   - "plugin:jest/recommended"
   - prettier
 rules:
-  strict: error
+  strict: [error]

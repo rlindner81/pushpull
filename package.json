@@ -11,7 +11,7 @@
     "src"
   ],
   "scripts": {
-    "lint": "npm run prettier && npm run eslint",
+    "lint": "npm run eslint && npm run prettier",
     "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
     "eslint": "eslint . --fix",
     "test": "jest",
@@ -26,10 +26,10 @@
   },
   "devDependencies": {
     "eslint": "^6.7.2",
-    "eslint-config-prettier": "^6.7.0",
+    "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-jest": "^22.21.0",
-    "jest": "^25.1.0",
-    "prettier": "^1.19.1",
+    "jest": "^25.2.4",
+    "prettier": "^2.0.2",
     "shx": "^0.3.2",
     "weak-napi": "^1.0.3"
   },
