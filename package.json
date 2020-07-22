@@ -1,6 +1,6 @@
 {
   "name": "pushpulljs",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Convenience tool to make your files' content flexible",
   "bin": {
     "pushpull": "./bin/cli.js"
@@ -25,13 +25,13 @@
     "npm": ">=6.0.0"
   },
   "devDependencies": {
-    "eslint": "^6.7.2",
+    "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-jest": "^22.21.0",
-    "jest": "^25.2.4",
+    "jest": "^26.1.0",
     "prettier": "^2.0.2",
     "shx": "^0.3.2",
-    "weak-napi": "^1.0.3"
+    "weak-napi": "^2.0.2"
   },
   "keywords": [
     "cli",
