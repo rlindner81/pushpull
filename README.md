@@ -32,7 +32,6 @@ examples:
 
 For examples see [USAGE.md](./USAGE.md).
 
-
 ### Notes
 
 - quoting `<files>` and `<marker>` helps to be compatible across platforms
