@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-conditional-expect */
 "use strict"
 
 // The point of this test is to collect the snapshots for different platforms
