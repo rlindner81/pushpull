@@ -1,6 +1,6 @@
 {
   "name": "pushpulljs",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Convenience tool to make your files' content flexible",
   "bin": {
     "pushpull": "./bin/cli.js"
@@ -18,20 +18,19 @@
     "test:memheap": "node --expose-gc ./node_modules/jest/bin/jest --runInBand --logHeapUsage",
     "test:memleaks": "jest --runInBand --detectLeaks",
     "prepublishOnly": "npm audit && npm run lint && npm run test && npm run test:memleaks",
-    "upgrade-lock": "shx rm -rf package-lock.json node_modules && npm i --package-lock=true"
+    "upgrade-lock": "npx shx rm -rf package-lock.json node_modules && npm i --package-lock=true"
   },
   "engines": {
     "node": ">=8.0.0",
     "npm": ">=6.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.5.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-jest": "^22.21.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^24.3.6",
     "jest": "^26.1.0",
-    "prettier": "^2.0.2",
-    "shx": "^0.3.2",
-    "weak-napi": "^2.0.2"
+    "prettier": "^2.3.0",
+    "weak-napi": "^1.0.3"
   },
   "keywords": [
     "cli",
