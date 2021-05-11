@@ -1,6 +1,6 @@
 {
   "name": "pushpulljs",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Convenience tool to make your files' content flexible",
   "bin": {
     "pushpull": "./bin/cli.js"
