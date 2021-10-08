@@ -16,8 +16,14 @@ const run = (cmd) => {
   return result
 }
 
+const runAndFilter = (cmd) => run(cmd).replace(/\s(?:node_modules|test)\/\S+/g, "")
+
 const testStrings = (input) => {
-  return [run(`echo unquoted: ${input}`), run(`echo single-quoted: '${input}'`), run(`echo double-quoted: "${input}"`)]
+  return [
+    runAndFilter(`echo unquoted: ${input}`),
+    run(`echo single-quoted: '${input}'`),
+    run(`echo double-quoted: "${input}"`),
+  ]
 }
 
 const testAll = () => {
@@ -105,7 +111,7 @@ test("shelltest darwin", () => {
       ",
         ],
         "expand": Array [
-          "unquoted: bin/cli.js src/args.js src/directives.js src/filter.js src/helper.js src/index.js test/args.test.js test/directives.test.js test/filter.test.js test/helper.test.js test/index.test.js test/shell.test.js
+          "unquoted: bin/cli.js src/args.js src/directives.js src/filter.js src/helper.js src/index.js
       ",
           "single-quoted: **/*.js
       ",
