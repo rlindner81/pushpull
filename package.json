@@ -27,7 +27,7 @@
   "devDependencies": {
     "eslint": "8.9.0",
     "eslint-config-prettier": "8.3.0",
-    "eslint-plugin-jest": "26.1.0",
+    "eslint-plugin-jest": "26.1.1",
     "jest": "27.5.1",
     "prettier": "2.5.1",
     "weak-napi": "2.0.2"
