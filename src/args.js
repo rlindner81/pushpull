@@ -1,6 +1,6 @@
-"use strict"
+"use strict";
 
-const { assert, ordinal } = require("./helper")
+const { assert, ordinal } = require("./helper");
 
 const usage = () => `
 usage: pushpull '<files>' [<options>] [<directives>]
@@ -19,20 +19,20 @@ examples:
   pushpull '.npmrc' --on '#WRITE_LOCK'
   pushpull '**/*.js' --pull '//DEBUG'
   pushpull 'config/**/*.yaml' 'config/**/.*rc' --silent --off '#OPTIONAL*'
-`
+`;
 
 const _unquoteArg = (arg) => {
-  return arg.replace(/^'(.+)'$/, "$1").replace(/^"(.+)"$/, "$1")
-}
+  return arg.replace(/^'(.+)'$/, "$1").replace(/^"(.+)"$/, "$1");
+};
 
 const parseArgs = (args) => {
-  const optionsIndex = args.findIndex((arg) => arg.startsWith("--"))
-  const filters = (optionsIndex === -1 ? args : args.slice(0, optionsIndex)).map(_unquoteArg)
-  let directives = []
-  let silent = false
+  const optionsIndex = args.findIndex((arg) => arg.startsWith("--"));
+  const filters = (optionsIndex === -1 ? args : args.slice(0, optionsIndex)).map(_unquoteArg);
+  let directives = [];
+  let silent = false;
 
   if (optionsIndex !== -1) {
-    let parsedOptions = 0
+    let parsedOptions = 0;
     const rest = args
       .slice(optionsIndex)
       .join(" ")
@@ -40,25 +40,25 @@ const parseArgs = (args) => {
       .replace(
         /--(push|pull|on|off|switch|silent)\s*(.*?)\s*(?=$|--(?:push|pull|on|off|switch|silent))/g,
         (_, option, arg) => {
-          const unquotedArg = _unquoteArg(arg)
-          parsedOptions++
+          const unquotedArg = _unquoteArg(arg);
+          parsedOptions++;
           if (option === "silent") {
-            silent = true
-            return ""
+            silent = true;
+            return "";
           }
-          assert(unquotedArg.length !== 0, `${ordinal(parsedOptions)} option --${option} has no associated argument`)
+          assert(unquotedArg.length !== 0, `${ordinal(parsedOptions)} option --${option} has no associated argument`);
 
-          directives.push([option === "on" ? "push" : option === "off" ? "pull" : option, unquotedArg])
-          return ""
+          directives.push([option === "on" ? "push" : option === "off" ? "pull" : option, unquotedArg]);
+          return "";
         }
-      )
-    assert(rest.length === 0, `missed (partial) arguments '${rest}'`)
+      );
+    assert(rest.length === 0, `missed (partial) arguments '${rest}'`);
   }
 
-  return { filters, directives, silent }
-}
+  return { filters, directives, silent };
+};
 
 module.exports = {
   usage,
   parseArgs,
-}
+};

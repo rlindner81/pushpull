@@ -1,30 +1,30 @@
 /* eslint-disable jest/no-conditional-expect */
-"use strict"
+"use strict";
 
 // The point of this test is to collect the snapshots for different platforms
-const { execSync } = require("child_process")
+const { execSync } = require("child_process");
 
 const run = (cmd) => {
-  let result
+  let result;
   try {
     result = execSync(cmd, {
       stdio: [null, "pipe", null],
-    }).toString()
+    }).toString();
   } catch (err) {
-    result = err.message
+    result = err.message;
   }
-  return result
-}
+  return result;
+};
 
-const runAndFilter = (cmd) => run(cmd).replace(/\s(?:node_modules|test)\/\S+/g, "")
+const runAndFilter = (cmd) => run(cmd).replace(/\s(?:node_modules|test)\/\S+/g, "");
 
 const testStrings = (input) => {
   return [
     runAndFilter(`echo unquoted: ${input}`),
     run(`echo single-quoted: '${input}'`),
     run(`echo double-quoted: "${input}"`),
-  ]
-}
+  ];
+};
 
 const testAll = () => {
   return {
@@ -33,8 +33,8 @@ const testAll = () => {
     "slash-arg": testStrings("//ARG"),
     "dash-arg": testStrings("--ARG"),
     "amp-arg": testStrings("&&ARG"),
-  }
-}
+  };
+};
 
 test("shelltest win32", () => {
   if (process.platform === "win32") {
@@ -85,9 +85,9 @@ test("shelltest win32", () => {
       ",
         ],
       }
-    `)
+    `);
   }
-})
+});
 
 test("shelltest darwin", () => {
   if (process.platform === "darwin") {
@@ -135,9 +135,9 @@ test("shelltest darwin", () => {
       ",
         ],
       }
-    `)
+    `);
   }
-})
+});
 
 test("shelltest linux", () => {
   if (process.platform === "linux") {
@@ -185,6 +185,6 @@ test("shelltest linux", () => {
       ",
         ],
       }
-    `)
+    `);
   }
-})
+});
