@@ -5,7 +5,7 @@
 const { execSync } = require("child_process")
 
 const run = (cmd) => {
-  let result = null
+  let result
   try {
     result = execSync(cmd, {
       stdio: [null, "pipe", null],
@@ -92,8 +92,8 @@ test("shelltest win32", () => {
 test("shelltest darwin", () => {
   if (process.platform === "darwin") {
     expect(testAll()).toMatchInlineSnapshot(`
-      Object {
-        "amp-arg": Array [
+      {
+        "amp-arg": [
           "Command failed: echo unquoted: &&ARG
       /bin/sh: ARG: command not found
       ",
@@ -102,7 +102,7 @@ test("shelltest darwin", () => {
           "double-quoted: &&ARG
       ",
         ],
-        "dash-arg": Array [
+        "dash-arg": [
           "unquoted: --ARG
       ",
           "single-quoted: --ARG
@@ -110,7 +110,7 @@ test("shelltest darwin", () => {
           "double-quoted: --ARG
       ",
         ],
-        "expand": Array [
+        "expand": [
           "unquoted: bin/cli.js src/args.js src/directives.js src/filter.js src/helper.js src/index.js
       ",
           "single-quoted: **/*.js
@@ -118,7 +118,7 @@ test("shelltest darwin", () => {
           "double-quoted: **/*.js
       ",
         ],
-        "hash-arg": Array [
+        "hash-arg": [
           "unquoted:
       ",
           "single-quoted: #ARG
@@ -126,7 +126,7 @@ test("shelltest darwin", () => {
           "double-quoted: #ARG
       ",
         ],
-        "slash-arg": Array [
+        "slash-arg": [
           "unquoted: //ARG
       ",
           "single-quoted: //ARG
