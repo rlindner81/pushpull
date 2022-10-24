@@ -46,7 +46,7 @@ registry=https://registry.npmjs.org #REG_NPM
 #REG_GITHUB registry=https://npm.pkg.github.com
 #REG_CUSTOM registry=https://npm.company.com
 
-pushpull .npmrc --off '#REG*' --on '#REG*CUSTOM'
+pushpull .npmrc --off '#REG*' --on '#REG_CUSTOM'
 
 .npmrc (after)
 #REG_NPM registry=https://registry.npmjs.org
