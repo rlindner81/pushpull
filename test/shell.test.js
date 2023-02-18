@@ -39,8 +39,8 @@ const testAll = () => {
 test("shelltest win32", () => {
   if (process.platform === "win32") {
     expect(testAll()).toMatchInlineSnapshot(`
-      Object {
-        "amp-arg": Array [
+      {
+        "amp-arg": [
           "Command failed: echo unquoted: &&ARG
       'ARG' is not recognized as an internal or external command,
       operable program or batch file.
@@ -52,7 +52,7 @@ test("shelltest win32", () => {
           "double-quoted: \\"&&ARG\\"
       ",
         ],
-        "dash-arg": Array [
+        "dash-arg": [
           "unquoted: --ARG
       ",
           "single-quoted: '--ARG'
@@ -60,7 +60,7 @@ test("shelltest win32", () => {
           "double-quoted: \\"--ARG\\"
       ",
         ],
-        "expand": Array [
+        "expand": [
           "unquoted: **/*.js
       ",
           "single-quoted: '**/*.js'
@@ -68,7 +68,7 @@ test("shelltest win32", () => {
           "double-quoted: \\"**/*.js\\"
       ",
         ],
-        "hash-arg": Array [
+        "hash-arg": [
           "unquoted: #ARG
       ",
           "single-quoted: '#ARG'
@@ -76,7 +76,7 @@ test("shelltest win32", () => {
           "double-quoted: \\"#ARG\\"
       ",
         ],
-        "slash-arg": Array [
+        "slash-arg": [
           "unquoted: //ARG
       ",
           "single-quoted: '//ARG'
@@ -142,8 +142,8 @@ test("shelltest darwin", () => {
 test("shelltest linux", () => {
   if (process.platform === "linux") {
     expect(testAll()).toMatchInlineSnapshot(`
-      Object {
-        "amp-arg": Array [
+      {
+        "amp-arg": [
           "Command failed: echo unquoted: &&ARG
       /bin/sh: 1: ARG: not found
       ",
@@ -152,7 +152,7 @@ test("shelltest linux", () => {
           "double-quoted: &&ARG
       ",
         ],
-        "dash-arg": Array [
+        "dash-arg": [
           "unquoted: --ARG
       ",
           "single-quoted: --ARG
@@ -160,7 +160,7 @@ test("shelltest linux", () => {
           "double-quoted: --ARG
       ",
         ],
-        "expand": Array [
+        "expand": [
           "unquoted: bin/cli.js src/args.js src/directives.js src/filter.js src/helper.js src/index.js test/args.test.js test/directives.test.js test/filter.test.js test/helper.test.js test/index.test.js test/shell.test.js
       ",
           "single-quoted: **/*.js
@@ -168,7 +168,7 @@ test("shelltest linux", () => {
           "double-quoted: **/*.js
       ",
         ],
-        "hash-arg": Array [
+        "hash-arg": [
           "unquoted:
       ",
           "single-quoted: #ARG
@@ -176,7 +176,7 @@ test("shelltest linux", () => {
           "double-quoted: #ARG
       ",
         ],
-        "slash-arg": Array [
+        "slash-arg": [
           "unquoted: //ARG
       ",
           "single-quoted: //ARG
