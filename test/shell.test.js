@@ -161,7 +161,7 @@ test("shelltest linux", () => {
       ",
         ],
         "expand": [
-          "unquoted: bin/cli.js src/args.js src/directives.js src/filter.js src/helper.js src/index.js test/args.test.js test/directives.test.js test/filter.test.js test/helper.test.js test/index.test.js test/shell.test.js
+          "unquoted: bin/cli.js src/args.js src/directives.js src/filter.js src/helper.js src/index.js
       ",
           "single-quoted: **/*.js
       ",
