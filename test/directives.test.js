@@ -1,46 +1,46 @@
-"use strict"
+"use strict";
 
-jest.mock("fs")
-const fs = require("fs")
-const processDirectives = require("../src/directives")
+jest.mock("fs");
+const fs = require("fs");
+const processDirectives = require("../src/directives");
 
-const mockReadFile = jest.spyOn(fs, "readFile")
-const mockWriteFile = jest.spyOn(fs, "writeFile")
+const mockReadFile = jest.spyOn(fs, "readFile");
+const mockWriteFile = jest.spyOn(fs, "writeFile");
 
 const mockDirectives = (input, directives) => {
-  let result = null
+  let result = null;
   mockReadFile.mockImplementation((_, cb) => {
-    cb(null, input)
-  })
+    cb(null, input);
+  });
   mockWriteFile.mockImplementation((_, data, cb) => {
-    result = data
-    cb(null)
-  })
+    result = data;
+    cb(null);
+  });
   return processDirectives(["_"], directives).then(() => {
-    return result
-  })
-}
+    return result;
+  });
+};
 
 beforeEach(() => {
-  mockReadFile.mockClear()
-  mockWriteFile.mockClear()
-})
+  mockReadFile.mockClear();
+  mockWriteFile.mockClear();
+});
 
 test("process bad directive", () => {
-  return expect(() => mockDirectives("   # 123 alalalasdas   ", [["bad", "# 123"]])).toThrowErrorMatchingSnapshot()
-})
+  return expect(() => mockDirectives("   # 123 alalalasdas   ", [["bad", "# 123"]])).toThrowErrorMatchingSnapshot();
+});
 
 test("process push directive", () => {
   return mockDirectives("   # 123 alalalasdas   ", [["push", "# 123"]]).then((result) => {
-    expect(result).toEqual("   alalalasdas # 123   ")
-  })
-})
+    expect(result).toEqual("   alalalasdas # 123   ");
+  });
+});
 
 test("process pull directive", () => {
   return mockDirectives("   alalalasdas # 123   ", [["pull", "# 123"]]).then((result) => {
-    expect(result).toEqual("   # 123 alalalasdas   ")
-  })
-})
+    expect(result).toEqual("   # 123 alalalasdas   ");
+  });
+});
 
 test("process switch directive", () => {
   return mockDirectives(
@@ -51,9 +51,9 @@ test("process switch directive", () => {
     expect(result).toEqual(
       `   # 123 alalalasdas   
    alalalasdas # 123   `
-    )
-  })
-})
+    );
+  });
+});
 
 test("process wildcard markers", () => {
   return mockDirectives(
@@ -77,9 +77,9 @@ test("process wildcard markers", () => {
     #REG_A registry=a
     #REG_B registry=b
     #REG_C registry=c
-`)
-  })
-})
+`);
+  });
+});
 
 test("process escaping", () => {
   const testSet = `
@@ -88,7 +88,7 @@ test("process escaping", () => {
     c \\*
     d \\\\*
     e *
-`
+`;
   return Promise.resolve()
     .then(() => mockDirectives(testSet, [["pull", "\\\\\\*"]]))
     .then((result) =>
@@ -119,68 +119,68 @@ test("process escaping", () => {
     d \\\\*
     * e
 `)
-    )
-})
+    );
+});
 
 test("allow markers with slashes", () => {
   return mockDirectives("   alalalasdas // lalala // 123   ", [["switch", "// 123"]]).then((result) => {
-    expect(result).toEqual("   // 123 alalalasdas // lalala   ")
-  })
-})
+    expect(result).toEqual("   // 123 alalalasdas // lalala   ");
+  });
+});
 
 test("don't push/switch partial front matches with prefixes", () => {
   return mockDirectives("A_// LALA alalalasdas // lalala", [
     ["push", "// LALA"],
     ["switch", "// LALA"],
   ]).then((result) => {
-    expect(result).toEqual(null)
-  })
-})
+    expect(result).toEqual(null);
+  });
+});
 
 test("don't push/switch partial front matches with suffixes", () => {
   return mockDirectives("// LALA_A alalalasdas // lalala", [
     ["push", "// LALA"],
     ["switch", "// LALA"],
   ]).then((result) => {
-    expect(result).toEqual(null)
-  })
-})
+    expect(result).toEqual(null);
+  });
+});
 
 test("don't pull/switch partial back matches with prefixes", () => {
   return mockDirectives("alalalasdas // lalala A_// LALA", [
     ["pull", "// LALA"],
     ["switch", "// LALA"],
   ]).then((result) => {
-    expect(result).toEqual(null)
-  })
-})
+    expect(result).toEqual(null);
+  });
+});
 
 test("don't pull/switch partial back matches with suffixes", () => {
   return mockDirectives("alalalasdas // lalala // LALA_A", [
     ["pull", "// LALA"],
     ["switch", "// LALA"],
   ]).then((result) => {
-    expect(result).toEqual(null)
-  })
-})
+    expect(result).toEqual(null);
+  });
+});
 
 test("don't push past line end", () => {
   const testSet = `
     aaa
     bbb
     ccc
-`
+`;
   return Promise.resolve()
     .then(() => mockDirectives(testSet, [["push", "aaa"]]))
-    .then((result) => expect(result).toEqual(null))
-})
+    .then((result) => expect(result).toEqual(null));
+});
 
 test("don't exchange with whitespace", () => {
-  const testSet = `    aaa  `
+  const testSet = `    aaa  `;
   return Promise.resolve()
     .then(() => mockDirectives(testSet, [["pull", "aaa"]]))
-    .then((result) => expect(result).toEqual(null))
-})
+    .then((result) => expect(result).toEqual(null));
+});
 
 test("usage switch directive", () => {
   return mockDirectives(
@@ -193,9 +193,9 @@ test("usage switch directive", () => {
     expect(result).toEqual(`
     #WRITE_LOCK package-lock=false
     package-lock=true #WRITE_LOCK
-`)
-  })
-})
+`);
+  });
+});
 test("usage multiline comments", () => {
   return mockDirectives(
     `
@@ -207,9 +207,9 @@ test("usage multiline comments", () => {
     expect(result).toEqual(`
   <!--DELETE <option>deleteall</option>
   -->
-`)
-  })
-})
+`);
+  });
+});
 
 test("usage markers with wildcards", () => {
   return mockDirectives(
@@ -227,9 +227,9 @@ test("usage markers with wildcards", () => {
     #REG_NPM registry=https://registry.npmjs.org
     #REG_GITHUB registry=https://npm.pkg.github.com
     registry=https://npm.company.com #REG_CUSTOM
-`)
-  })
-})
+`);
+  });
+});
 
 test("usage markers with escaped wildcard", () => {
   return mockDirectives(
@@ -242,14 +242,14 @@ test("usage markers with escaped wildcard", () => {
     expect(result).toEqual(`
     /*WIN const win=true
     */
-`)
-  })
-})
+`);
+  });
+});
 
 test("usage markers with literal backslash", () => {
   return Promise.resolve()
     .then(() => mockDirectives(`const win=true \\\\WIN`, [["pull", "\\\\\\\\WIN"]]))
     .then((result) => expect(result).toEqual(`\\\\WIN const win=true`))
     .then(() => mockDirectives(`const win=true \\\\WIN`, [["pull", "\\\\\\\\*"]]))
-    .then((result) => expect(result).toEqual(`\\\\WIN const win=true`))
-})
+    .then((result) => expect(result).toEqual(`\\\\WIN const win=true`));
+});

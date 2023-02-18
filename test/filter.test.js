@@ -1,69 +1,69 @@
-"use strict"
+"use strict";
 
-jest.mock("fs")
-const { readdir } = require("fs")
-const { join, normalize } = require("path")
-const processFilters = require("../src/filter")
+jest.mock("fs");
+const { readdir } = require("fs");
+const { join, normalize } = require("path");
+const processFilters = require("../src/filter");
 
-const basedir = normalize(join(__dirname, ".."))
-const mockCwd = jest.spyOn(process, "cwd").mockImplementation(() => "/cwd")
+const basedir = normalize(join(__dirname, ".."));
+const mockCwd = jest.spyOn(process, "cwd").mockImplementation(() => "/cwd");
 
 const mockReaddir = (hierarchy) => {
   readdir.mockImplementation((startDir, opts, cb) => {
     const entries = hierarchy[startDir].map((e) => {
       return typeof e === "string"
         ? { name: e, isDirectory: () => false, isFile: () => true }
-        : { name: e.sub, isDirectory: () => true, isFile: () => false }
-    })
-    cb(null, entries)
-  })
-}
+        : { name: e.sub, isDirectory: () => true, isFile: () => false };
+    });
+    cb(null, entries);
+  });
+};
 
 const mockFailingReaddir = (err) => {
   readdir.mockImplementation((startDir, opts, cb) => {
-    cb(err)
-  })
-}
+    cb(err);
+  });
+};
 
 beforeEach(() => {
-  mockCwd.mockClear()
-})
+  mockCwd.mockClear();
+});
 
 test("filter for non-existent file", () => {
-  const err = new Error("non-existent file")
-  err.code = "ENOENT"
-  mockFailingReaddir(err)
-  return expect(processFilters("bad")).rejects.toThrow(`invalid starting directory ${join("/cwd")}`)
-})
+  const err = new Error("non-existent file");
+  err.code = "ENOENT";
+  mockFailingReaddir(err);
+  return expect(processFilters("bad")).rejects.toThrow(`invalid starting directory ${join("/cwd")}`);
+});
 
 test("filter for generic read error", () => {
-  const err = new Error("generic read error")
-  mockFailingReaddir(err)
-  return expect(processFilters("bad")).rejects.toThrowErrorMatchingSnapshot()
-})
+  const err = new Error("generic read error");
+  mockFailingReaddir(err);
+  return expect(processFilters("bad")).rejects.toThrowErrorMatchingSnapshot();
+});
 
 test("filter for single file", () => {
-  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
+  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] });
   return processFilters("*.a").then((result) => {
-    expect(result).toEqual([join("/cwd", "a.a")])
-  })
-})
+    expect(result).toEqual([join("/cwd", "a.a")]);
+  });
+});
 
 test("filter with absolute filepath", () => {
-  mockReaddir({ [basedir]: ["a"] })
+  mockReaddir({ [basedir]: ["a"] });
   return processFilters(join(basedir, "a")).then((result) => {
-    expect(mockCwd).toHaveBeenCalledTimes(0)
-    expect(result).toEqual([join(basedir, "a")])
-  })
-})
+    expect(mockCwd).toHaveBeenCalledTimes(0);
+    expect(result).toEqual([join(basedir, "a")]);
+  });
+});
 
 test("filter with relative filepath", () => {
-  mockReaddir({ [join("/cwd")]: ["a"] })
+  mockReaddir({ [join("/cwd")]: ["a"] });
   return processFilters("a").then((result) => {
-    expect(mockCwd).toHaveBeenCalledTimes(1)
-    expect(result).toEqual([join("/cwd", "a")])
-  })
-})
+    expect(mockCwd).toHaveBeenCalledTimes(1);
+    expect(result).toEqual([join("/cwd", "a")]);
+  });
+});
 
 test("filter withSubDir", () => {
   mockReaddir({
@@ -71,16 +71,16 @@ test("filter withSubDir", () => {
     [join("/cwd", "a")]: [{ sub: "b" }, { sub: "c" }, "a", "b", "c", ".a", "a.a", "a."],
     [join("/cwd", "a", "b")]: ["a", "b", "c", ".a", "a.a", "a."],
     [join("/cwd", "a", "c")]: ["a", "b", "c", ".a", "a."],
-  })
+  });
   return processFilters("**/*.a").then((result) => {
-    expect(result).toEqual([join("/cwd", "a.a"), join("/cwd", "a", "a.a"), join("/cwd", "a", "b", "a.a")])
-  })
-})
+    expect(result).toEqual([join("/cwd", "a.a"), join("/cwd", "a", "a.a"), join("/cwd", "a", "b", "a.a")]);
+  });
+});
 
 test("filter with all files expansion", () => {
-  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
+  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] });
   return processFilters("*.*").then((result) => {
-    expect(mockCwd).toHaveBeenCalledTimes(1)
+    expect(mockCwd).toHaveBeenCalledTimes(1);
     expect(result).toEqual([
       join("/cwd", "a"),
       join("/cwd", "b"),
@@ -88,14 +88,14 @@ test("filter with all files expansion", () => {
       join("/cwd", ".a"),
       join("/cwd", "a.a"),
       join("/cwd", "a."),
-    ])
-  })
-})
+    ]);
+  });
+});
 
 test("filter with all files with ext expansion", () => {
-  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
+  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] });
   return processFilters("*.*").then((result) => {
-    expect(mockCwd).toHaveBeenCalledTimes(1)
+    expect(mockCwd).toHaveBeenCalledTimes(1);
     expect(result).toEqual([
       join("/cwd", "a"),
       join("/cwd", "b"),
@@ -103,14 +103,14 @@ test("filter with all files with ext expansion", () => {
       join("/cwd", ".a"),
       join("/cwd", "a.a"),
       join("/cwd", "a."),
-    ])
-  })
-})
+    ]);
+  });
+});
 
 test("filter with multiple inputs", () => {
-  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] })
+  mockReaddir({ [join("/cwd")]: ["a", "b", "c", ".a", "a.a", "a."] });
   return processFilters("a", "b", "*.a").then((result) => {
-    expect(mockCwd).toHaveBeenCalledTimes(3)
-    expect(result).toEqual([join("/cwd", "a"), join("/cwd", "b"), join("/cwd", "a.a")])
-  })
-})
+    expect(mockCwd).toHaveBeenCalledTimes(3);
+    expect(result).toEqual([join("/cwd", "a"), join("/cwd", "b"), join("/cwd", "a.a")]);
+  });
+});

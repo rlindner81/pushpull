@@ -1,5 +1,8 @@
 # PushPull
 
+[![npm version](https://badge.fury.io/js/pushpulljs.svg)](https://badge.fury.io/js/pushpulljs)
+![CI Main](https://github.com/rlindner81/pushpull/actions/workflows/ci-main.yml/badge.svg)
+
 Convenience tool to make your files' content flexible.
 
 ## Install
