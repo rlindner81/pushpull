@@ -1,6 +1,0 @@
-{
-  "extends": ["config:base"],
-  "groupName": "all",
-  "automerge": true,
-  "requiredStatusChecks": null
-}

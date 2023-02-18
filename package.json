@@ -11,13 +11,16 @@
     "src"
   ],
   "scripts": {
-    "lint": "npm run eslint && npm run prettier",
-    "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
-    "eslint": "eslint . --fix",
     "test": "jest",
     "test:memheap": "node --expose-gc ./node_modules/jest/bin/jest --runInBand --logHeapUsage",
     "test:memleaks": "jest --runInBand --detectLeaks",
-    "prepublishOnly": "npm audit && npm run lint && npm run test && npm run test:memleaks",
+    "lint": "npm run eslint && npm run prettier",
+    "lint:ci": "npm run eslint:ci && npm run prettier:ci",
+    "eslint": "eslint --fix .",
+    "eslint:ci": "eslint .",
+    "prettier": "prettier --write --loglevel error .",
+    "prettier:ci": "prettier --check .",
+    "prepublishOnly": "npm test && npm run lint:ci",
     "upgrade-lock": "npx shx rm -rf package-lock.json node_modules && npm i --package-lock"
   },
   "engines": {
