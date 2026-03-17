@@ -50,7 +50,7 @@ const parseArgs = (args) => {
 
           directives.push([option === "on" ? "push" : option === "off" ? "pull" : option, unquotedArg]);
           return "";
-        }
+        },
       );
     assert(rest.length === 0, `missed (partial) arguments '${rest}'`);
   }

@@ -19,7 +19,7 @@ const _processFilterDirectory = (startDir, withSubDirs, matchesFilepath, result 
           } else if (fileEntry.isFile() && matchesFilepath(filepath)) {
             result.push(filepath);
           }
-        })
+        }),
       );
     })
     .catch((err) => {
@@ -64,7 +64,7 @@ const _prepare = (input) => {
 
 const processFilters = (...inputs) => {
   return Promise.all(inputs.map((input) => _processFilterDirectory(..._prepare(input)))).then((outputs) =>
-    outputs.reduce((prev, cur) => prev.concat(cur), [])
+    outputs.reduce((prev, cur) => prev.concat(cur), []),
   );
 };
 

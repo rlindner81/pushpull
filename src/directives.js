@@ -20,7 +20,7 @@ const _switchRe = (marker) => {
   const preparedMarker = _prepareMarker(marker);
   return RegExp(
     `^(\\s*)(?:(${preparedMarker})([^\\S\\r\\n]+)(.*?\\S)|(\\S.*?)([^\\S\\r\\n]+)(${preparedMarker}))(\\s*)$`,
-    "gm"
+    "gm",
   );
 };
 
@@ -58,7 +58,7 @@ const processDirectives = (filepaths, directives) => {
           return writeFileAsync(filepath, data);
         }
       });
-    })
+    }),
   ).then(() => markerChanges);
 };
 

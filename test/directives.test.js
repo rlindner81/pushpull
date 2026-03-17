@@ -46,11 +46,11 @@ test("process switch directive", () => {
   return mockDirectives(
     `   alalalasdas # 123   
    # 123 alalalasdas   `,
-    [["switch", "# 123"]]
+    [["switch", "# 123"]],
   ).then((result) => {
     expect(result).toEqual(
       `   # 123 alalalasdas   
-   alalalasdas # 123   `
+   alalalasdas # 123   `,
     );
   });
 });
@@ -68,7 +68,7 @@ test("process wildcard markers", () => {
     [
       ["pull", "#REG*"],
       ["push", "#REG*GITHUB"],
-    ]
+    ],
   ).then((result) => {
     expect(result).toEqual(`
     rog=true #ROG
@@ -98,7 +98,7 @@ test("process escaping", () => {
     \\* c
     d \\\\*
     e *
-`)
+`),
     )
     .then(() => mockDirectives(testSet, [["pull", "\\\\*"]]))
     .then((result) =>
@@ -108,7 +108,7 @@ test("process escaping", () => {
     \\* c
     \\\\* d
     e *
-`)
+`),
     )
     .then(() => mockDirectives(testSet, [["pull", "\\*"]]))
     .then((result) =>
@@ -118,7 +118,7 @@ test("process escaping", () => {
     c \\*
     d \\\\*
     * e
-`)
+`),
     );
 });
 
@@ -188,7 +188,7 @@ test("usage switch directive", () => {
     package-lock=false #WRITE_LOCK
     #WRITE_LOCK package-lock=true
 `,
-    [["switch", "#WRITE_LOCK"]]
+    [["switch", "#WRITE_LOCK"]],
   ).then((result) => {
     expect(result).toEqual(`
     #WRITE_LOCK package-lock=false
@@ -202,7 +202,7 @@ test("usage multiline comments", () => {
   <option>deleteall</option> <!--DELETE
   -->
 `,
-    [["pull", "<!--DELETE"]]
+    [["pull", "<!--DELETE"]],
   ).then((result) => {
     expect(result).toEqual(`
   <!--DELETE <option>deleteall</option>
@@ -221,7 +221,7 @@ test("usage markers with wildcards", () => {
     [
       ["pull", "#REG*"],
       ["push", "#REG*CUSTOM"],
-    ]
+    ],
   ).then((result) => {
     expect(result).toEqual(`
     #REG_NPM registry=https://registry.npmjs.org
@@ -237,7 +237,7 @@ test("usage markers with escaped wildcard", () => {
     const win=true /*WIN
     */
 `,
-    [["pull", "/\\*WIN"]]
+    [["pull", "/\\*WIN"]],
   ).then((result) => {
     expect(result).toEqual(`
     /*WIN const win=true
