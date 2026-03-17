@@ -12,8 +12,8 @@
   ],
   "scripts": {
     "test": "jest",
-    "test:memheap": "node --expose-gc ./node_modules/jest/bin/jest --runInBand --logHeapUsage",
-    "test:memleaks": "jest --runInBand --detectLeaks",
+    "test:mem-heap": "node --expose-gc ./node_modules/jest/bin/jest --runInBand --logHeapUsage",
+    "test:mem-leaks": "jest --runInBand --detectLeaks",
     "lint": "npm run eslint && npm run prettier",
     "lint:ci": "npm run eslint:ci && npm run prettier:ci",
     "eslint": "eslint --fix .",
@@ -21,11 +21,11 @@
     "prettier": "prettier --write --loglevel error .",
     "prettier:ci": "prettier --check .",
     "prepublishOnly": "npm test && npm run lint:ci",
-    "upgrade-lock": "npx shx rm -rf package-lock.json node_modules && npm i --package-lock"
+    "upgrade-lock": "rm -rf package-lock.json node_modules && npm i",
+    "update-lock": "npm up --save"
   },
   "engines": {
-    "node": ">=8.0.0",
-    "npm": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
